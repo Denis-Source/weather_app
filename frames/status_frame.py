@@ -1,9 +1,6 @@
 from frames.status_frame_ui import StatusFrameUI
-from handlers.weather_handlers.open_weather_handler import OpenWeatherHandler
-from handlers.city_handlers.open_weather_city_handler import OpenWeatherCityHandler
-from handlers.sun_handlers.open_weather_sun_handler import OpenWeatherSunsetHandler
 
-from handlers.errors import BadCityNameException, NoAPIConnectionException, BadWeatherException
+from handlers.errors import WeatherAppException
 
 from datetime import datetime
 import time
@@ -11,11 +8,11 @@ from config import Config
 
 
 class StatusFrame(StatusFrameUI):
-    def __init__(self, master):
+    def __init__(self, master, weather_handler_class, city_handler_class, sun_handler_class):
         super().__init__(master)
-        self.weather_handler_class = OpenWeatherHandler
-        self.city_handler_class = OpenWeatherCityHandler
-        self.sun_handler_class = OpenWeatherSunsetHandler
+        self.weather_handler_class = weather_handler_class
+        self.city_handler_class = city_handler_class
+        self.sun_handler_class = sun_handler_class
 
         self.city = None
         self.current_weather = None
@@ -24,7 +21,6 @@ class StatusFrame(StatusFrameUI):
 
         self.update_time()
 
-    # TODO handle errors
     def update_time(self):
         try:
             current_time = datetime.utcfromtimestamp(time.time() + self.current_weather.time_zone)
@@ -38,27 +34,26 @@ class StatusFrame(StatusFrameUI):
 
         self.time_update_task = self.master.after(500, self.update_time)
 
-    # TODO handle errors
     def update_weather(self, city_name):
         try:
             self.city = self.city_handler_class(city_name).get_city()
-            self.sun_info = self.sun_handler_class(self.city.longitude, self.city.latitude).get_ascii_time()
-            weather = self.weather_handler_class(self.city.longitude, self.city.latitude).get_weather_current()
+            self.sun_info = self.sun_handler_class(self.city).get_ascii_time()
+            weather = self.weather_handler_class(self.city).get_weather_current()
             self.current_weather = weather
             self.current_weather.update_state(self.sun_info)
             self.update_current_weather()
             self.update_forecast()
-        except (BadWeatherException, NoAPIConnectionException, BadCityNameException) as e:
+        except WeatherAppException as e:
             self.error(e.message)
 
     def update_forecast(self):
-        forecast = self.weather_handler_class(self.city.longitude, self.city.latitude).get_weather_forecast(4)
+        forecast = self.weather_handler_class(self.city).get_weather_forecast(4)
         try:
             for i, day_forecast in enumerate(forecast):
                 time_stamp = datetime.utcfromtimestamp(day_forecast.time + day_forecast.time_zone)
                 day_of_the_week = time_stamp.strftime('%a')
                 self.set_forecast_day(i, day_of_the_week, day_forecast.temperature)
-        except (NoAPIConnectionException, BadWeatherException) as e:
+        except (NoAPIConnectionException, BadWeatherException, NotCompatibleAPIException) as e:
             self.error(e.message)
 
     def update_current_weather(self):
@@ -78,4 +73,4 @@ class StatusFrame(StatusFrameUI):
             self.set_forecast_day(i, "", self.BLANK_TEMP)
 
     def set_sun_info(self):
-        self.sun_info = self.sun_handler_class(self.city.latitude, self.city.longitude).get_ascii_time()
+        self.sun_info = self.sun_handler_class(self.city).get_ascii_time()

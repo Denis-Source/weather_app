@@ -1,4 +1,9 @@
-class BadCityNameException(Exception):
+class WeatherAppException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
+class BadCityNameException(WeatherAppException):
     def __init__(self, city_name, message="Bad city name"):
         super().__init__(message)
         self.city_name = city_name
@@ -8,7 +13,7 @@ class BadCityNameException(Exception):
         return f"{self.message}: {self.city_name}"
 
 
-class NoAPIConnectionException(Exception):
+class NoAPIConnectionException(WeatherAppException):
     def __init__(self, api_name, action, message="No connection"):
         super().__init__(message)
         self.api_name = api_name
@@ -19,7 +24,7 @@ class NoAPIConnectionException(Exception):
         return f"{self.message} to {self.api_name} doing {self.action}"
 
 
-class BadWeatherException(Exception):
+class BadWeatherException(WeatherAppException):
     def __init__(self, api_name, message="Bad weather"):
         super().__init__(message)
         self.api_name = api_name
@@ -27,3 +32,24 @@ class BadWeatherException(Exception):
 
     def __str__(self):
         return f"{self.message} from {self.api_name}"
+
+
+class NotCompatibleAPIException(WeatherAppException):
+    def __init__(self, api_name, message="Not compatible api"):
+        super().__init__(message)
+        self.api_name = api_name
+        self.message = message
+
+    def __str__(self):
+        return f"{self.message}: {self.api_name}"
+
+
+class ServiceUnavailableException(WeatherAppException):
+    def __init__(self, api_name, message="Service unavailable"):
+        super().__init__(message)
+        self.api_name = api_name
+        self.message = message
+
+    def __str__(self):
+        return f"{self.message}: {self.api_name}"
+

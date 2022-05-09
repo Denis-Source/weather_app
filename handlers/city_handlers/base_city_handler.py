@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 
 
 class BaseCityHandler(ABC):
-    def __init__(self, ascii_name):
-        self.city_ascii_name = ascii_name
+    def __init__(self, name):
+        self.name = name
 
     @abstractmethod
     def get_url(self):

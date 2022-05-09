@@ -11,8 +11,8 @@ from config import Config
 class OpenWeatherCityHandler(BaseCityHandler):
     API_NAME = "OpenWeather"
 
-    def __init__(self, ascii_name):
-        super().__init__(ascii_name)
+    def __init__(self, name):
+        super().__init__(name)
         self.logger = logging.getLogger("ow_city")
 
     def ping(self):
@@ -20,7 +20,7 @@ class OpenWeatherCityHandler(BaseCityHandler):
             self.logger.debug(f"Trying to ping {self.API_NAME}")
             timeout = 1
             requests.get("http://api.openweathermap.org", timeout=timeout)
-            self.logger.info("Ping to openweather successful")
+            self.logger.info(f"Ping to {self.API_NAME} successful")
             return True
         except (requests.ConnectionError, requests.Timeout):
             self.logger.warning(f"Cant ping {self.API_NAME} weather")
@@ -28,9 +28,9 @@ class OpenWeatherCityHandler(BaseCityHandler):
 
     def get_url(self):
         url = f"http://api.openweathermap.org/geo/1.0/direct" \
-              f"?q={self.city_ascii_name}&" \
+              f"?q={self.name}&" \
               f"limit=1&appid={Config.OPEN_WEATHER_API_KEY}"
-        self.logger.debug(f"Created city url for {self.API_NAME} {url}")
+        self.logger.debug(f"Created city url for {self.API_NAME}: {url}")
         return url
 
     def get_city(self):
@@ -47,7 +47,7 @@ class OpenWeatherCityHandler(BaseCityHandler):
             )
         except (KeyError, IndexError):
             self.logger.info("Bad city name")
-            raise BadCityNameException(self.city_ascii_name)
+            raise BadCityNameException(self.name)
         except (requests.ConnectionError, requests.Timeout):
             self.logger.warning(f"Error connecting {self.API_NAME}")
             raise NoAPIConnectionException({self.API_NAME}, "city_info")

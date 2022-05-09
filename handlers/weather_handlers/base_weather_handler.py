@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
+from handlers.city import City
 
 
 class BaseWeatherHandler(ABC):
-    def __init__(self, longitude, latitude):
-        self.longitude = longitude
-        self.latitude = latitude
+    def __init__(self, city: City):
+        self.city = city
 
     @abstractmethod
     def ping(self):

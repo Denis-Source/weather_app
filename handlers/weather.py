@@ -15,7 +15,7 @@ class Weather:
     MIST = "mist"
     SANDSTORM = "sand storm"
     ERUPTION = "eruption"
-    TORNADO = "tornado"
+    STORM = "tornado"
 
     IMAGE_TABLE = {
         CLEAR: "images/sunny.png",
@@ -23,12 +23,12 @@ class Weather:
         OVERCAST: "images/overcast.png",
         SUNNY_RAIN: "images/sunny_rain.png",
         RAIN: "images/rain.png",
-        THUNDERSTORM: "images/storm.png",
+        THUNDERSTORM: "images/thunderstorm.png",
         SNOW: "images/snow.png",
         MIST: "images/mist.png",
         SANDSTORM: "images/sand.png",
         ERUPTION: "images/eruption.png",
-        TORNADO: "images/storm.png"
+        STORM: "images/storm.png"
     }
 
     def __init__(

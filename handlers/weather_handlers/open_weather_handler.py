@@ -3,7 +3,7 @@ import logging
 
 from handlers.weather_handlers.base_weather_handler import BaseWeatherHandler
 from handlers.weather import Weather
-from handlers.errors import NoAPIConnectionException, BadWeatherException
+from handlers.errors import NoAPIConnectionException, BadWeatherException, NotCompatibleAPIException
 
 from config import Config
 
@@ -28,8 +28,8 @@ class OpenWeatherHandler(BaseWeatherHandler):
     }
     API_NAME = "OpenWeather"
 
-    def __init__(self, longitude, latitude):
-        super().__init__(longitude, latitude)
+    def __init__(self, city):
+        super().__init__(city)
         self.logger = logging.getLogger("ow_wthr")
 
     def ping(self):
@@ -44,18 +44,26 @@ class OpenWeatherHandler(BaseWeatherHandler):
             return False
 
     def get_url_current(self):
-        url = f"https://api.openweathermap.org/data/2.5/weather" \
-              f"?lat={self.latitude}&lon={self.longitude}&" \
-              f"appid={Config.OPEN_WEATHER_API_KEY}"
-        self.logger.debug(f"Created current url for {self.API_NAME}: {url}")
-        return url
+        if self.city.longitude and self.city.latitude:
+            url = f"https://api.openweathermap.org/data/2.5/weather" \
+                  f"?lat={self.city.latitude}&lon={self.city.longitude}&" \
+                  f"appid={Config.OPEN_WEATHER_API_KEY}"
+            self.logger.debug(f"Created current url for {self.API_NAME}: {url}")
+            return url
+        else:
+            self.logger.warning(f"Not compatible {self.API_NAME}")
+            raise NotCompatibleAPIException(self.API_NAME)
 
     def get_url_forecast(self):
-        url = f"https://api.openweathermap.org/data/2.5/onecall" \
-              f"?lat={self.latitude}&lon={self.longitude}" \
-              f"&appid={Config.OPEN_WEATHER_API_KEY}"
-        self.logger.debug(f"Created forecast url for {self.API_NAME}: {url}")
-        return url
+        if self.city.longitude and self.city.latitude:
+            url = f"https://api.openweathermap.org/data/2.5/onecall" \
+                  f"?lat={self.city.latitude}&lon={self.city.longitude}" \
+                  f"&appid={Config.OPEN_WEATHER_API_KEY}"
+            self.logger.debug(f"Created forecast url for {self.API_NAME}: {url}")
+            return url
+        else:
+            self.logger.warning(f"Not compatible {self.API_NAME}")
+            raise NotCompatibleAPIException(self.API_NAME)
 
     def get_weather_current(self):
         try:
@@ -88,7 +96,7 @@ class OpenWeatherHandler(BaseWeatherHandler):
             forecast = []
             for day_info in results["daily"]:
                 weather = Weather(
-                    city_name=None,
+                    city_name=self.city.name,
                     status=self.STATUS_TABLE[day_info["weather"][0]["main"]],
                     temperature=day_info["temp"]["day"] - 273.15,
                     pressure=day_info["pressure"],
@@ -105,3 +113,4 @@ class OpenWeatherHandler(BaseWeatherHandler):
             raise BadWeatherException(self.API_NAME)
         except (requests.ConnectionError, requests.Timeout):
             self.logger.warning(f"Error connecting {self.API_NAME}")
+            raise NoAPIConnectionException

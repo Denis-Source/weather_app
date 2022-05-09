@@ -6,6 +6,11 @@ from frames.search_frame import SearchFrame
 from frames.loading_frame import LoadingFrame
 from frames.status_frame import StatusFrame
 
+from handlers.weather_handlers.accuweather_handler import AccuWeatherHandler
+from handlers.city_handlers.accuweather_city_handler import AccuWeatherCityHandler
+from handlers.sun_handlers.open_weather_sun_handler import OpenWeatherSunsetHandler
+
+
 from config import Config
 
 
@@ -15,7 +20,12 @@ class WeatherApp(tk.Tk):
 
         self.search_frame = SearchFrame(master=self)
         self.loading_frame = LoadingFrame(master=self)
-        self.status_frame = StatusFrame(master=self)
+        self.status_frame = StatusFrame(
+            master=self,
+            weather_handler_class=AccuWeatherHandler,
+            city_handler_class=AccuWeatherCityHandler,
+            sun_handler_class=OpenWeatherSunsetHandler
+        )
 
         self.geometry("640x480")
         self.configure(bg=Config.BG_COLOR_PRIMARY)

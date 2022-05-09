@@ -6,9 +6,9 @@ from handlers.weather_handlers.open_weather_handler import OpenWeatherHandler
 
 
 class OpenWeatherSunsetHandler(BaseSunsetHandler):
-    def __init__(self, longitude, latitude):
-        super().__init__(longitude, latitude)
-        self.weather_handler = OpenWeatherHandler(self.longitude, self.latitude)
+    def __init__(self, city):
+        super().__init__(city)
+        self.weather_handler = OpenWeatherHandler(city)
 
     def ping(self):
         return self.weather_handler.ping()
