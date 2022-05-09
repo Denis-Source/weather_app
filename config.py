@@ -1,5 +1,8 @@
+from logging import DEBUG, INFO, WARNING, ERROR, CRITICAL
+
+
 class Config:
-    OPEN_WEATHER_API_KEY = "fdc4b4e12d2b09ba6e3efaf5f08669c3"
+    OPEN_WEATHER_API_KEY = ""
 
     WIDTH = 640
     HEIGHT = 480
@@ -21,3 +24,7 @@ class Config:
 
     ERROR_IMAGE = "images/storm.png"
     ERROR_COLOR = "#d85c57"
+
+    LOGGER_FORMAT = "%(asctime)s\t%(levelname)-7s\t%(name)-6s\t%(message)s"
+    LOGGING_LEVEL = ERROR
+    LOGGING_FILE = "weather.log"

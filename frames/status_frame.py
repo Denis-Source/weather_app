@@ -1,9 +1,10 @@
 from frames.status_frame_ui import StatusFrameUI
-from handlers.weather_handlers.weather import Weather
-from handlers.city_handlers.city import City
 from handlers.weather_handlers.open_weather_handler import OpenWeatherHandler
 from handlers.city_handlers.open_weather_city_handler import OpenWeatherCityHandler
 from handlers.sun_handlers.open_weather_sun_handler import OpenWeatherSunsetHandler
+
+from handlers.errors import BadCityNameException, NoAPIConnectionException, BadWeatherException
+
 from datetime import datetime
 import time
 from config import Config
@@ -39,44 +40,32 @@ class StatusFrame(StatusFrameUI):
 
     # TODO handle errors
     def update_weather(self, city_name):
-        self.update_city(city_name)
-        if self.city:
+        try:
+            self.city = self.city_handler_class(city_name).get_city()
             self.sun_info = self.sun_handler_class(self.city.longitude, self.city.latitude).get_ascii_time()
             weather = self.weather_handler_class(self.city.longitude, self.city.latitude).get_weather_current()
             self.current_weather = weather
-            if self.current_weather:
-                self.current_weather.update_state(self.sun_info)
-                self.update_current_weather()
-                self.update_forecast()
-            else:
-                self.error("No weather")
-        else:
-            self.error("No connection")
+            self.current_weather.update_state(self.sun_info)
+            self.update_current_weather()
+            self.update_forecast()
+        except (BadWeatherException, NoAPIConnectionException, BadCityNameException) as e:
+            self.error(e.message)
 
-    # TODO handle error
-    def update_city(self, name):
-        self.city = self.city_handler_class(name).get_city()
-        if self.city:
-            self.set_city_name(self.city.name)
-        else:
-            self.error("Wrong city")
-
-    # TODO handle error
     def update_forecast(self):
         forecast = self.weather_handler_class(self.city.longitude, self.city.latitude).get_weather_forecast(4)
-        if forecast:
+        try:
             for i, day_forecast in enumerate(forecast):
                 time_stamp = datetime.utcfromtimestamp(day_forecast.time + day_forecast.time_zone)
                 day_of_the_week = time_stamp.strftime('%a')
                 self.set_forecast_day(i, day_of_the_week, day_forecast.temperature)
-        else:
-            self.error("No forecast")
+        except (NoAPIConnectionException, BadWeatherException) as e:
+            self.error(e.message)
 
     def update_current_weather(self):
         self.set_weather_temp(self.current_weather.temperature)
         self.set_weather_status(self.current_weather.status)
         self.set_weather_image(self.current_weather.image)
-        self.update_city(self.city.name)
+        self.set_city_name(self.city.name)
 
     def error(self, error_name):
         self.set_bg_color(Config.ERROR_COLOR)
@@ -84,6 +73,7 @@ class StatusFrame(StatusFrameUI):
         self.set_weather_status(error_name)
         self.set_weather_image(Config.ERROR_IMAGE)
         self.set_weather_temp(self.BLANK_TEMP)
+        self.current_weather = None
         for i in range(self.forecast_len):
             self.set_forecast_day(i, "", self.BLANK_TEMP)
 

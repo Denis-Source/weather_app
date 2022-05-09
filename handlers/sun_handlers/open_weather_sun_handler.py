@@ -3,7 +3,6 @@ import datetime
 
 from handlers.sun_handlers.base_sun_handler import BaseSunsetHandler
 from handlers.weather_handlers.open_weather_handler import OpenWeatherHandler
-from config import Config
 
 
 class OpenWeatherSunsetHandler(BaseSunsetHandler):

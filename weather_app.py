@@ -1,4 +1,5 @@
 import tkinter as tk
+import logging
 from threading import Thread
 
 from frames.search_frame import SearchFrame
@@ -20,28 +21,42 @@ class WeatherApp(tk.Tk):
         self.configure(bg=Config.BG_COLOR_PRIMARY)
         self.resizable(False, False)
 
-        self.focus_search_frame()
+        logging.basicConfig(
+            format=Config.LOGGER_FORMAT,
+            level=Config.LOGGING_LEVEL,
+        )
 
-    def focus_search_frame(self, event=None):
+        self.logger = logging.getLogger("app")
+
+        self.logger.info("Starting app")
+        self.show_search_frame()
+
+    def show_search_frame(self, event=None):
+        self.logger.debug("Starting showing search frame")
         self.search_frame.search_entry.focus()
         self.loading_frame.pack_forget()
         self.status_frame.pack_forget()
         self.search_frame.pack()
-        self.search_frame.search_button.bind("<Button-1>", self.focus_status_frame)
-        self.bind("<Return>", self.focus_status_frame)
+        self.search_frame.search_button.bind("<Button-1>", self.show_status_frame)
+        self.bind("<Return>", self.show_status_frame)
         self.unbind("<BackSpace>")
+        self.logger.info("Showing search frame")
 
     def load_weather(self, city_name):
+        self.logger.debug("Starting loading weather")
         self.loading_frame.start_animation()
         self.search_frame.pack_forget()
+        self.logger.info("Showing loading frame")
         self.loading_frame.pack()
         self.status_frame.update_weather(city_name)
         self.loading_frame.pack_forget()
         self.loading_frame.stop_animation()
+        self.logger.debug("Starting showing status frame")
         self.status_frame.pack()
-        self.bind("<BackSpace>", self.focus_search_frame)
+        self.bind("<BackSpace>", self.show_search_frame)
 
-    def focus_status_frame(self, event=None):
+    def show_status_frame(self, event=None):
+        self.logger.debug("Starting gathering weather status")
         self.status_frame.focus()
         self.unbind("<Return>")
         city_name = self.search_frame.get_city_name()

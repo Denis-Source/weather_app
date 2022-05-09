@@ -17,7 +17,7 @@ class SunriseSunsetSunHandler(BaseSunsetHandler):
             requests.get("https://sunrise-sunset.org", timeout=timeout)
             self.logger.info("Ping to sunrise-sunset successful")
             return True
-        except (requests. ConnectionError, requests. Timeout):
+        except (requests.ConnectionError, requests.Timeout):
             self.logger.warning("Cant ping sunrise-sunset city")
             return False
 
