@@ -1,5 +1,5 @@
 class WeatherAppException(Exception):
-    def __init__(self, message):
+    def __init__(self, message="Unspecified"):
         super().__init__(message)
 
 

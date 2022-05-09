@@ -57,17 +57,17 @@ class Weather:
             self.bg_color = Config.SNOW_COLOR
             return
 
-        if abs(sun_info[0] - self.time - self.time_zone) < self.SUNSET_PERIOD \
-                or abs(sun_info[1] - self.time - self.time_zone) < self.SUNSET_PERIOD:
+        if abs(sun_info[0] - self.time) < self.SUNSET_PERIOD \
+                or abs(sun_info[1] - self.time) < self.SUNSET_PERIOD:
             self.image = "images/sunrise.png"
             self.bg_color = Config.SUNSET_COLOR
             return
 
-        if abs(sun_info[0] - self.time - self.time_zone) < self.DUSK_PERIOD:
+        if abs(sun_info[0] - self.time) < self.DUSK_PERIOD:
             self.bg_color = Config.DUSK_COLOR
             return
 
-        if sun_info[0] < self.time + self.time_zone < sun_info[1]:
+        if sun_info[0] < self.time < sun_info[1]:
             is_day = True
         else:
             is_day = False

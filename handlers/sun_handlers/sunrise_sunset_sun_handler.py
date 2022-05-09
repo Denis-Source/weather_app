@@ -3,11 +3,14 @@ import logging
 import requests
 
 from handlers.sun_handlers.base_sun_handler import BaseSunsetHandler
+from handlers.errors import NoAPIConnectionException, BadCityNameException
 
 
 class SunriseSunsetSunHandler(BaseSunsetHandler):
-    def __init__(self, longitude, latitude):
-        super().__init__(longitude, latitude)
+    API_NAME = "Sunrise Sunset"
+
+    def __init__(self, city):
+        super().__init__(city)
         self.logger = logging.getLogger("sun_ss")
 
     def ping(self):
@@ -23,21 +26,21 @@ class SunriseSunsetSunHandler(BaseSunsetHandler):
 
     def get_url(self):
         url = f"https://api.sunrise-sunset.org/json?lat=" \
-              f"{self.latitude}&lng={self.longitude}&formatted=0"
+              f"{self.city.latitude}&lng={self.city.longitude}&formatted=0"
         self.logger.debug(f"Created current url for sunrise-sunset: {url}")
         return url
 
     def get_ascii_time(self):
-        pass
+        try:
+            self.logger.debug(f"Getting sun info from {self.API_NAME}")
+            response = requests.get(self.get_url())
+            sun_data = response.json()
 
-    def get_human_time(self):
-        response = requests.get(self.get_url())
-        sun_data = response.json()
+            sunrise = datetime.datetime.fromisoformat(sun_data["results"]["sunrise"])
+            sunset = datetime.datetime.fromisoformat(sun_data["results"]["sunset"])
 
-        sunrise = sun_data["results"]["sunrise"]
-        sunset = sun_data["results"]["sunset"]
-
-        sunrise = datetime.datetime.fromisoformat(sunrise)
-        sunset = datetime.datetime.fromisoformat(sunset)
-
-        return f"{sunrise.hour}:{sunrise.minute}", f"{sunset.hour}:{sunset.minute}"
+            return sunrise.timestamp() + 3600 * 24, sunset.timestamp() + 3600 * 24
+        except (requests.ConnectionError, requests.Timeout):
+            raise NoAPIConnectionException(self.API_NAME, "sun info")
+        except KeyError:
+            raise BadCityNameException(self.city.name)

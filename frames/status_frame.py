@@ -53,7 +53,7 @@ class StatusFrame(StatusFrameUI):
                 time_stamp = datetime.utcfromtimestamp(day_forecast.time + day_forecast.time_zone)
                 day_of_the_week = time_stamp.strftime('%a')
                 self.set_forecast_day(i, day_of_the_week, day_forecast.temperature)
-        except (NoAPIConnectionException, BadWeatherException, NotCompatibleAPIException) as e:
+        except WeatherAppException as e:
             self.error(e.message)
 
     def update_current_weather(self):

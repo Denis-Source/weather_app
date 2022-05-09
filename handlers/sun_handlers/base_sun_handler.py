@@ -17,6 +17,3 @@ class BaseSunsetHandler(ABC):
     @abstractmethod
     def get_ascii_time(self):
         pass
-
-    def get_human_time(self):
-        pass
