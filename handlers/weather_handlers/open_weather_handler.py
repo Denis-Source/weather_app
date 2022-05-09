@@ -7,28 +7,26 @@ from config import Config
 
 
 class OpenWeatherHandler(BaseWeatherHandler):
+    STATUS_TABLE = {
+        "Thunderstorm": Weather.THUNDERSTORM,
+        "Drizzle": Weather.SUNNY_RAIN,
+        "Rain": Weather.RAIN,
+        "Snow": Weather.SNOW,
+        "Mist": Weather.MIST,
+        "Smoke": Weather.MIST,
+        "Haze": Weather.MIST,
+        "Dust": Weather.SANDSTORM,
+        "Fog": Weather.MIST,
+        "Sand": Weather.SANDSTORM,
+        "Ash": Weather.ERUPTION,
+        "Squall": Weather.THUNDERSTORM,
+        "Tornado": Weather.THUNDERSTORM,
+        "Clear": Weather.CLEAR,
+        "Clouds": Weather.CLOUDY
+    }
     def __init__(self, longitude, latitude):
         super().__init__(longitude, latitude)
         self.logger = logging.getLogger("ow_wthr")
-
-    STATUS_TABLE = {
-        "clear sky": "sunny",
-        "few clouds": "cloudy",
-        "scattered clouds": "cloudy",
-        "overcast clouds": "overcast",
-        "broken clouds": "overcast",
-        "shower rain": "sunny rain",
-        "light rain": "sunny rain",
-        "rain": "rain",
-        "moderate rain": "rain",
-        "heavy intensity rain": "rain",
-        "thunderstorm": "rain",
-        "snow": "snow",
-        "light snow": "snow",
-        "moderate snow": "snow",
-        "heavy snow": "snow",
-        "mist": "mist"
-    }
 
     def ping(self):
         try:
@@ -56,13 +54,13 @@ class OpenWeatherHandler(BaseWeatherHandler):
         return url
 
     def get_weather_current(self):
-        try:
+        # try:
             response = requests.get(self.get_url_current())
             self.logger.info("Got current weather request from openweather")
             weather_dict = response.json()
             return Weather(
                 city_name=weather_dict["name"],
-                status=self.STATUS_TABLE[weather_dict["weather"][0]["description"]],
+                status=self.STATUS_TABLE[weather_dict["weather"][0]["main"]],
                 temperature=weather_dict["main"]["temp"] - 273.15,
                 pressure=weather_dict["main"]["pressure"],
                 humidity=weather_dict["main"]["humidity"],
@@ -71,8 +69,8 @@ class OpenWeatherHandler(BaseWeatherHandler):
                 time=weather_dict["dt"],
                 time_zone=weather_dict["timezone"]
             )
-        except (KeyError, requests.ConnectionError, requests.Timeout):
-            self.logger.warning("Error connecting openweather")
+        # except (KeyError, requests.ConnectionError, requests.Timeout):
+        #     self.logger.warning("Error connecting openweather")
 
     def get_weather_forecast(self, n):
         try:
@@ -83,7 +81,7 @@ class OpenWeatherHandler(BaseWeatherHandler):
             for day_info in results["daily"]:
                 weather = Weather(
                     city_name=None,
-                    status=self.STATUS_TABLE[day_info["weather"][0]["description"]],
+                    status=self.STATUS_TABLE[day_info["weather"][0]["main"]],
                     temperature=day_info["temp"]["day"] - 273.15,
                     pressure=day_info["pressure"],
                     humidity=day_info["humidity"],

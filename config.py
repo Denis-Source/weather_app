@@ -1,5 +1,5 @@
 class Config:
-    OPEN_WEATHER_API_KEY = ""
+    OPEN_WEATHER_API_KEY = "fdc4b4e12d2b09ba6e3efaf5f08669c3"
 
     WIDTH = 640
     HEIGHT = 480

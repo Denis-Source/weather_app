@@ -4,14 +4,31 @@ from config import Config
 class Weather:
     SUNSET_PERIOD = 30 * 60
     DUSK_PERIOD = 120 * 60
+
+    CLEAR = "clear sky"
+    CLOUDY = "cloudy"
+    OVERCAST = "overcast"
+    SUNNY_RAIN = "sunny rain"
+    RAIN = "rain"
+    THUNDERSTORM = "thunderstorm"
+    SNOW = "snow"
+    MIST = "mist"
+    SANDSTORM = "sand storm"
+    ERUPTION = "eruption"
+    TORNADO = "tornado"
+
     IMAGE_TABLE = {
-        "sunny": "images/sunny.png",
-        "cloudy": "images/cloudy.png",
-        "overcast": "images/overcast.png",
-        "sunny rain": "images/sunny_rain.png",
-        "rain": "images/rain.png",
-        "snow": "images/snow.png",
-        "mist": "images/mist.png"
+        CLEAR: "images/sunny.png",
+        CLOUDY: "images/cloudy.png",
+        OVERCAST: "images/overcast.png",
+        SUNNY_RAIN: "images/sunny_rain.png",
+        RAIN: "images/rain.png",
+        THUNDERSTORM: "images/storm.png",
+        SNOW: "images/snow.png",
+        MIST: "images/mist.png",
+        SANDSTORM: "images/sand.png",
+        ERUPTION: "images/eruption.png",
+        TORNADO: "images/storm.png"
     }
 
     def __init__(
@@ -36,7 +53,7 @@ class Weather:
         self.time_zone = time_zone
 
     def set_bg_color(self, sun_info):
-        if self.status == "mist" or self.status == "snow":
+        if self.status == self.SNOW or self.status == self.MIST:
             self.bg_color = Config.SNOW_COLOR
             return
 
@@ -55,24 +72,23 @@ class Weather:
         else:
             is_day = False
 
-        if self.status == "rain":
+        if self.status == self.RAIN or self.status == self.THUNDERSTORM:
             if is_day:
                 self.bg_color = Config.RAIN_NOON_COLOR
             else:
                 self.bg_color = Config.RAIN_NIGHT_COLOR
             return
 
-        if self.status == "sunny":
+        if self.status == self.CLEAR:
             if is_day:
                 self.bg_color = Config.NOON_COLOR
                 return
             else:
                 self.image = "images/moon.png"
-                self.status = "clear sky"
                 self.bg_color = Config.NIGHT_COLOR
                 return
 
-        if self.status == "cloudy":
+        if self.status == self.CLOUDY:
             if is_day:
                 self.bg_color = Config.CLOUD_COLOR
                 return
@@ -81,7 +97,7 @@ class Weather:
                 self.image = "images/night_cloudy.png"
                 return
 
-        if self.status == "overcast":
+        if self.status == self.OVERCAST:
             if is_day:
                 self.bg_color = Config.OVERCAST_COLOR
                 return
