@@ -45,7 +45,7 @@ class StatusFrame(StatusFrameUI):
             weather = self.weather_handler_class(self.city.longitude, self.city.latitude).get_weather_current()
             self.current_weather = weather
             if self.current_weather:
-                self.current_weather.set_bg_color(self.sun_info)
+                self.current_weather.update_state(self.sun_info)
                 self.update_current_weather()
                 self.update_forecast()
             else:

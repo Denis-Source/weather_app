@@ -52,7 +52,7 @@ class Weather:
         self.time = time
         self.time_zone = time_zone
 
-    def set_bg_color(self, sun_info):
+    def update_state(self, sun_info):
         if self.status == self.SNOW or self.status == self.MIST:
             self.bg_color = Config.SNOW_COLOR
             return
@@ -71,6 +71,10 @@ class Weather:
             is_day = True
         else:
             is_day = False
+
+        if self.status == self.ERUPTION:
+            self.bg_color = Config.SUNSET_COLOR
+            return
 
         if self.status == self.RAIN or self.status == self.THUNDERSTORM:
             if is_day:
