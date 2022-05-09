@@ -17,11 +17,19 @@ class LoadingFrame(tk.Frame):
         self.canvas = tk.Canvas(master=self, bg=Config.BG_COLOR_PRIMARY, highlightthickness=0,
                                 width=self.IMAGE_SIZE, height=self.IMAGE_SIZE)
         self.configure(height=Config.WIDTH)
-        self.update = self.draw().__next__
-        self.master.after(self.REFRESH_INTERVAL, self.update)
+        self.to_animate = False
+        self.update = None
 
     def load_image(self):
         self.spinner_image = Image.open(self.SPINNER_PATH).resize((self.IMAGE_SIZE, self.IMAGE_SIZE), Image.ANTIALIAS)
+
+    def start_animation(self):
+        self.to_animate = True
+        self.update = self.draw().__next__
+        self.master.after(self.REFRESH_INTERVAL, self.update)
+
+    def stop_animation(self):
+        self.to_animate = False
 
     def draw(self):
         self.load_image()
@@ -30,7 +38,8 @@ class LoadingFrame(tk.Frame):
             rotated_image = ImageTk.PhotoImage(self.spinner_image.rotate(angle))
             canvas_image = self.canvas.create_image(
                 self.IMAGE_SIZE, self.IMAGE_SIZE, image=rotated_image, anchor=tk.SE)
-            self.master.after(self.REFRESH_INTERVAL, self.update)
+            if self.to_animate:
+                self.master.after(self.REFRESH_INTERVAL, self.update)
             yield
             self.canvas.delete(canvas_image)
             angle += 10

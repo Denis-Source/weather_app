@@ -17,7 +17,7 @@ class Config:
     NIGHT_COLOR = "#3a5e99"
     RAIN_NIGHT_COLOR = "#3e4858"
     RAIN_NOON_COLOR = "#787fa3"
-    SNOW_COLOR = "#c4c4c4"
+    SNOW_COLOR = "#9d9d9d"
 
     ERROR_IMAGE = "images/storm.png"
     ERROR_COLOR = "#d85c57"

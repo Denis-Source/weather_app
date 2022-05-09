@@ -115,10 +115,11 @@ class Weather:
         return f"City: {self.city_name}\n" \
                f"Stat: {self.status}\n" \
                f"Imag: {self.image}\n" \
+               f"Colr: {self.bg_color}\n"\
                f"Temp: {self.temperature}\n" \
                f"Pres: {self.pressure}\n" \
                f"Humd: {self.humidity}\n" \
                f"WndS: {self.wind_speed}\n" \
                f"WndD: {self.wind_direction}\n" \
                f"Time: {self.time}\n" \
-               f"Tzne: {self.time_zone}"
+               f"Tzne: {self.time_zone}\n" \
