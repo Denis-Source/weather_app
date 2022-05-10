@@ -3,6 +3,8 @@ import logging
 import requests
 
 from handlers.sun_handlers.base_sun_handler import BaseSunsetHandler
+
+from handlers.sun_info import SunInfo
 from handlers.errors import NoAPIConnectionException, BadCityNameException
 
 
@@ -30,7 +32,7 @@ class SunriseSunsetSunHandler(BaseSunsetHandler):
         self.logger.debug(f"Created current url for sunrise-sunset: {url}")
         return url
 
-    def get_ascii_time(self):
+    def get_sun_info(self):
         try:
             self.logger.debug(f"Getting sun info from {self.API_NAME}")
             response = requests.get(self.get_url())
@@ -38,8 +40,7 @@ class SunriseSunsetSunHandler(BaseSunsetHandler):
 
             sunrise = datetime.datetime.fromisoformat(sun_data["results"]["sunrise"])
             sunset = datetime.datetime.fromisoformat(sun_data["results"]["sunset"])
-
-            return sunrise.timestamp() + 3600 * 24, sunset.timestamp() + 3600 * 24
+            return SunInfo(sunrise.timestamp(), sunset.timestamp())
         except (requests.ConnectionError, requests.Timeout):
             raise NoAPIConnectionException(self.API_NAME, "sun info")
         except KeyError:

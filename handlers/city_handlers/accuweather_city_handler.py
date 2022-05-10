@@ -35,7 +35,7 @@ class AccuWeatherCityHandler(BaseCityHandler):
 
     def get_url_location(self, city):
         url = f"http://dataservice.accuweather.com/locations/v1/" \
-              f"{city.info}" \
+              f"{city.woeid}" \
               f"?apikey={Config.ACCUWEATHER_API_KEY}"
         self.logger.debug(f"Created city location url for {self.API_NAME}: {url}")
         return url
@@ -49,7 +49,7 @@ class AccuWeatherCityHandler(BaseCityHandler):
             city_dict = response.json()
             city = City(
                 name=city_dict["LocalizedName"],
-                info=city_dict["Key"],
+                woeid=city_dict["Key"],
                 state=city_dict["Country"]["LocalizedName"]
             )
             response = requests.get(self.get_url_location(city))

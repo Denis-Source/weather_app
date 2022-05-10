@@ -70,9 +70,9 @@ class AccuWeatherHandler(BaseWeatherHandler):
             return False
 
     def get_url_current(self):
-        if self.city.info:
+        if self.city.woeid:
             url = f"http://dataservice.accuweather.com/forecasts/v1/hourly/1hour/" \
-                  f"{self.city.info}?apikey={Config.ACCUWEATHER_API_KEY}" \
+                  f"{self.city.woeid}?apikey={Config.ACCUWEATHER_API_KEY}" \
                   f"&details=true&metric=true"
             self.logger.debug(f"Created current url for {self.API_NAME}: {url}")
             return url
@@ -81,9 +81,9 @@ class AccuWeatherHandler(BaseWeatherHandler):
             raise NotCompatibleAPIException(self.API_NAME)
 
     def get_url_forecast(self):
-        if self.city.info:
+        if self.city.woeid:
             url = f"http://dataservice.accuweather.com/forecasts/v1/daily/5day/" \
-                  f"{self.city.info}?apikey={Config.ACCUWEATHER_API_KEY}&details=true&metric=true"
+                  f"{self.city.woeid}?apikey={Config.ACCUWEATHER_API_KEY}&details=true&metric=true"
             self.logger.debug(f"Created forecast url for {self.API_NAME}: {url}")
             return url
         else:

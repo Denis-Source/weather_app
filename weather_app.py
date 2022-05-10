@@ -8,8 +8,10 @@ from frames.status_frame import StatusFrame
 
 from handlers.weather_handlers.accuweather_handler import AccuWeatherHandler
 from handlers.weather_handlers.open_weather_handler import OpenWeatherHandler
+from handlers.weather_handlers.meta_weather_handler import MetaWeatherHandler
 from handlers.city_handlers.accuweather_city_handler import AccuWeatherCityHandler
 from handlers.city_handlers.open_weather_city_handler import OpenWeatherCityHandler
+from handlers.city_handlers.meta_weather_city_handler import MetaWeatherCityHandler
 from handlers.sun_handlers.open_weather_sun_handler import OpenWeatherSunHandler
 from handlers.sun_handlers.sunrise_sunset_sun_handler import SunriseSunsetSunHandler
 

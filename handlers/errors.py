@@ -35,7 +35,7 @@ class BadWeatherException(WeatherAppException):
 
 
 class NotCompatibleAPIException(WeatherAppException):
-    def __init__(self, api_name, message="Not compatible api"):
+    def __init__(self, api_name, message="Not compatible apis"):
         super().__init__(message)
         self.api_name = api_name
         self.message = message

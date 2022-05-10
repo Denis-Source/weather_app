@@ -15,5 +15,5 @@ class BaseSunsetHandler(ABC):
         pass
 
     @abstractmethod
-    def get_ascii_time(self):
+    def get_sun_info(self):
         pass

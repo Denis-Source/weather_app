@@ -1,4 +1,5 @@
 from config import Config
+from handlers.sun_info import SunInfo
 
 
 class Weather:
@@ -52,22 +53,22 @@ class Weather:
         self.time = time
         self.time_zone = time_zone
 
-    def update_state(self, sun_info):
+    def update_state(self, sun_info: SunInfo):
         if self.status == self.SNOW or self.status == self.MIST:
             self.bg_color = Config.SNOW_COLOR
             return
 
-        if abs(sun_info[0] - self.time) < self.SUNSET_PERIOD \
-                or abs(sun_info[1] - self.time) < self.SUNSET_PERIOD:
+        if abs(sun_info.sunrise - self.time) < self.SUNSET_PERIOD \
+                or abs(sun_info.sunset - self.time) < self.SUNSET_PERIOD:
             self.image = "images/sunrise.png"
             self.bg_color = Config.SUNSET_COLOR
             return
 
-        if abs(sun_info[0] - self.time) < self.DUSK_PERIOD:
+        if abs(sun_info.sunset - self.time) < self.DUSK_PERIOD:
             self.bg_color = Config.DUSK_COLOR
             return
 
-        if sun_info[0] < self.time < sun_info[1]:
+        if sun_info.sunrise < self.time < sun_info.sunset:
             is_day = True
         else:
             is_day = False
@@ -115,11 +116,11 @@ class Weather:
         return f"City: {self.city_name}\n" \
                f"Stat: {self.status}\n" \
                f"Imag: {self.image}\n" \
-               f"Colr: {self.bg_color}\n"\
+               f"Colr: {self.bg_color}\n" \
                f"Temp: {self.temperature}\n" \
                f"Pres: {self.pressure}\n" \
                f"Humd: {self.humidity}\n" \
                f"WndS: {self.wind_speed}\n" \
                f"WndD: {self.wind_direction}\n" \
                f"Time: {self.time}\n" \
-               f"Tzne: {self.time_zone}\n" \
+               f"Tzne: {self.time_zone}\n"

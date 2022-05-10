@@ -37,7 +37,7 @@ class StatusFrame(StatusFrameUI):
     def update_weather(self, city_name):
         try:
             self.city = self.city_handler_class(city_name).get_city()
-            self.sun_info = self.sun_handler_class(self.city).get_ascii_time()
+            self.sun_info = self.sun_handler_class(self.city).get_sun_info()
             weather = self.weather_handler_class(self.city).get_weather_current()
             self.current_weather = weather
             self.current_weather.update_state(self.sun_info)
@@ -73,4 +73,4 @@ class StatusFrame(StatusFrameUI):
             self.set_forecast_day(i, "", self.BLANK_TEMP)
 
     def set_sun_info(self):
-        self.sun_info = self.sun_handler_class(self.city).get_ascii_time()
+        self.sun_info = self.sun_handler_class(self.city).get_sun_info()
