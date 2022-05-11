@@ -41,7 +41,7 @@ class Weather:
 
         self.status = status
         self.image = self.IMAGE_TABLE[status]
-        self.bg_color = None
+        self.color = None
 
         self.temperature = temperature
         self.pressure = pressure
@@ -55,17 +55,17 @@ class Weather:
 
     def update_state(self, sun_info: SunInfo):
         if self.status == self.SNOW or self.status == self.MIST:
-            self.bg_color = Config.SNOW_COLOR
+            self.color = Config.SNOW_COLOR
             return
 
         if abs(sun_info.sunrise - self.time) < self.SUNSET_PERIOD \
                 or abs(sun_info.sunset - self.time) < self.SUNSET_PERIOD:
             self.image = "images/sunrise.png"
-            self.bg_color = Config.SUNSET_COLOR
+            self.color = Config.SUNSET_COLOR
             return
 
         if abs(sun_info.sunset - self.time) < self.DUSK_PERIOD:
-            self.bg_color = Config.DUSK_COLOR
+            self.color = Config.DUSK_COLOR
             return
 
         if sun_info.sunrise < self.time < sun_info.sunset:
@@ -74,49 +74,49 @@ class Weather:
             is_day = False
 
         if self.status == self.ERUPTION:
-            self.bg_color = Config.SUNSET_COLOR
+            self.color = Config.SUNSET_COLOR
             return
 
         if self.status == self.RAIN or self.status == self.THUNDERSTORM:
             if is_day:
-                self.bg_color = Config.RAIN_NOON_COLOR
+                self.color = Config.RAIN_NOON_COLOR
             else:
-                self.bg_color = Config.RAIN_NIGHT_COLOR
+                self.color = Config.RAIN_NIGHT_COLOR
             return
 
         if self.status == self.CLEAR:
             if is_day:
-                self.bg_color = Config.NOON_COLOR
+                self.color = Config.NOON_COLOR
                 return
             else:
                 self.image = "images/moon.png"
-                self.bg_color = Config.NIGHT_COLOR
+                self.color = Config.NIGHT_COLOR
                 return
 
         if self.status == self.CLOUDY:
             if is_day:
-                self.bg_color = Config.CLOUD_COLOR
+                self.color = Config.CLOUD_COLOR
                 return
             else:
-                self.bg_color = Config.NIGHT_COLOR
+                self.color = Config.NIGHT_COLOR
                 self.image = "images/night_cloudy.png"
                 return
 
         if self.status == self.OVERCAST:
             if is_day:
-                self.bg_color = Config.OVERCAST_COLOR
+                self.color = Config.OVERCAST_COLOR
                 return
             else:
-                self.bg_color = Config.NIGHT_COLOR
+                self.color = Config.NIGHT_COLOR
                 return
 
-        self.bg_color = Config.DUSK_COLOR
+        self.color = Config.DUSK_COLOR
 
     def __str__(self):
         return f"City: {self.city_name}\n" \
                f"Stat: {self.status}\n" \
                f"Imag: {self.image}\n" \
-               f"Colr: {self.bg_color}\n" \
+               f"Colr: {self.color}\n" \
                f"Temp: {self.temperature}\n" \
                f"Pres: {self.pressure}\n" \
                f"Humd: {self.humidity}\n" \

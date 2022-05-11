@@ -6,9 +6,9 @@ from PIL import Image, ImageTk
 class StatusFrameUI(tk.Frame):
     BLANK_TEMP = -300
 
-    def __init__(self, master, **kw):
+    def __init__(self, root, **kw):
         super().__init__(**kw)
-        self.master = master
+        self.root = root
         self.configure(bg=Config.BG_COLOR_PRIMARY)
 
         self.city_frame = tk.Frame(

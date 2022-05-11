@@ -15,7 +15,6 @@ from handlers.city_handlers.meta_weather_city_handler import MetaWeatherCityHand
 from handlers.sun_handlers.open_weather_sun_handler import OpenWeatherSunHandler
 from handlers.sun_handlers.sunrise_sunset_sun_handler import SunriseSunsetSunHandler
 
-
 from config import Config
 
 
@@ -24,15 +23,15 @@ class WeatherApp(tk.Tk):
         super().__init__()
 
         self.search_frame = SearchFrame(master=self)
-        self.loading_frame = LoadingFrame(master=self)
+        self.loading_frame = LoadingFrame(self)
         self.status_frame = StatusFrame(
-            master=self,
+            root=self,
             weather_handler_class=OpenWeatherHandler,
             city_handler_class=OpenWeatherCityHandler,
             sun_handler_class=SunriseSunsetSunHandler
         )
 
-        self.geometry("640x480")
+        self.geometry(f"{Config.WIDTH}x{Config.HEIGHT}")
         self.configure(bg=Config.BG_COLOR_PRIMARY)
         self.resizable(False, False)
 
@@ -42,7 +41,6 @@ class WeatherApp(tk.Tk):
         )
 
         self.logger = logging.getLogger("app")
-
         self.logger.info("Starting app")
         self.show_search_frame()
 

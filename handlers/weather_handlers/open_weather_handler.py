@@ -80,7 +80,7 @@ class OpenWeatherHandler(BaseWeatherHandler):
                 wind_direction=weather_dict["wind"]["deg"],
                 time=weather_dict["dt"],
                 time_zone=weather_dict["timezone"]
-        )
+            )
         except KeyError:
             self.logger.warning(f"Bad weather response {self.API_NAME}")
             raise BadWeatherException(self.API_NAME)

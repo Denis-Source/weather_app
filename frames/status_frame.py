@@ -8,8 +8,8 @@ from config import Config
 
 
 class StatusFrame(StatusFrameUI):
-    def __init__(self, master, weather_handler_class, city_handler_class, sun_handler_class):
-        super().__init__(master)
+    def __init__(self, root, weather_handler_class, city_handler_class, sun_handler_class):
+        super().__init__(root)
         self.weather_handler_class = weather_handler_class
         self.city_handler_class = city_handler_class
         self.sun_handler_class = sun_handler_class
@@ -30,9 +30,9 @@ class StatusFrame(StatusFrameUI):
         self.set_day_name(current_time.strftime("%A"))
 
         if self.current_weather:
-            self.set_bg_color(self.current_weather.bg_color)
+            self.set_bg_color(self.current_weather.color)
 
-        self.time_update_task = self.master.after(500, self.update_time)
+        self.time_update_task = self.root.after(500, self.update_time)
 
     def update_weather(self, city_name):
         try:
