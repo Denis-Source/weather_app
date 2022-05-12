@@ -55,62 +55,61 @@ class MetaWeatherHandler(BaseWeatherHandler):
         return self.get_url_current()
 
     def get_weather_current(self):
-        # try:
-        response = requests.get(self.get_url_current())
-        self.logger.info(f"Got current weather request from {self.API_NAME}")
-        weather_dict = response.json()
+        try:
+            response = requests.get(self.get_url_current())
+            self.logger.info(f"Got current weather request from {self.API_NAME}")
+            weather_dict = response.json()
 
-        date = datetime.datetime.fromisoformat(weather_dict["time"])
-        time_zone = date.utcoffset() / datetime.timedelta(seconds=1)
+            date = datetime.datetime.fromisoformat(weather_dict["time"])
+            time_zone = date.utcoffset() / datetime.timedelta(seconds=1)
 
-        return Weather(
-            city_name=self.city.name,
-            status=self.STATUS_TABLE[weather_dict["consolidated_weather"][0]["weather_state_name"]],
-            temperature=weather_dict["consolidated_weather"][0]["the_temp"],
-            pressure=weather_dict["consolidated_weather"][0]["air_pressure"],
-            humidity=weather_dict["consolidated_weather"][0]["humidity"],
-            wind_speed=weather_dict["consolidated_weather"][0]["wind_speed"],
-            wind_direction=weather_dict["consolidated_weather"][0]["wind_direction"],
-            time=date.timestamp(),
-            time_zone=time_zone
-        )
-
-    # except KeyError:
-    #     self.logger.warning(f"Bad weather response {self.API_NAME}")
-    #     raise BadWeatherException(self.API_NAME)
-    # except (requests.ConnectionError, requests.Timeout):
-    #     self.logger.warning(f"Error connecting {self.API_NAME}")
-    #     raise NoAPIConnectionException(self.API_NAME, "current weather")
-
-    def get_weather_forecast(self, n):
-        # try:
-        response = requests.get(self.get_url_forecast())
-        self.logger.info(f"Got forecast weather request from {self.API_NAME}")
-        results = response.json()
-        forecast = []
-
-        date = datetime.datetime.fromisoformat(results["time"])
-        time_zone = date.utcoffset() / datetime.timedelta(seconds=1)
-
-        for day_info in results["consolidated_weather"]:
-            date = datetime.datetime.fromisoformat(day_info["applicable_date"])
-
-            weather = Weather(
+            return Weather(
                 city_name=self.city.name,
-                status=self.STATUS_TABLE[day_info["weather_state_name"]],
-                temperature=day_info["the_temp"],
-                pressure=day_info["air_pressure"],
-                humidity=day_info["humidity"],
-                wind_speed=day_info["wind_speed"],
-                wind_direction=day_info["wind_direction"],
+                status=self.STATUS_TABLE[weather_dict["consolidated_weather"][0]["weather_state_name"]],
+                temperature=weather_dict["consolidated_weather"][0]["the_temp"],
+                pressure=weather_dict["consolidated_weather"][0]["air_pressure"],
+                humidity=weather_dict["consolidated_weather"][0]["humidity"],
+                wind_speed=weather_dict["consolidated_weather"][0]["wind_speed"],
+                wind_direction=weather_dict["consolidated_weather"][0]["wind_direction"],
                 time=date.timestamp(),
                 time_zone=time_zone
             )
-            forecast.append(weather)
-        return forecast[1:n + 1]
-    # except KeyError:
-    #     self.logger.warning(f"Bad weather response {self.API_NAME}")
-    #     raise BadWeatherException(self.API_NAME)
-    # except (requests.ConnectionError, requests.Timeout):
-    #     self.logger.warning(f"Error connecting {self.API_NAME}")
-    #     raise NoAPIConnectionException
+        except KeyError:
+            self.logger.warning(f"Bad weather response {self.API_NAME}")
+            raise BadWeatherException(self.API_NAME)
+        except (requests.ConnectionError, requests.Timeout):
+            self.logger.warning(f"Error connecting {self.API_NAME}")
+            raise NoAPIConnectionException(self.API_NAME, "current weather")
+
+    def get_weather_forecast(self, n):
+        try:
+            response = requests.get(self.get_url_forecast())
+            self.logger.info(f"Got forecast weather request from {self.API_NAME}")
+            results = response.json()
+            forecast = []
+
+            date = datetime.datetime.fromisoformat(results["time"])
+            time_zone = date.utcoffset() / datetime.timedelta(seconds=1)
+
+            for day_info in results["consolidated_weather"]:
+                date = datetime.datetime.fromisoformat(day_info["applicable_date"])
+
+                weather = Weather(
+                    city_name=self.city.name,
+                    status=self.STATUS_TABLE[day_info["weather_state_name"]],
+                    temperature=day_info["the_temp"],
+                    pressure=day_info["air_pressure"],
+                    humidity=day_info["humidity"],
+                    wind_speed=day_info["wind_speed"],
+                    wind_direction=day_info["wind_direction"],
+                    time=date.timestamp(),
+                    time_zone=time_zone
+                )
+                forecast.append(weather)
+            return forecast[1:n + 1]
+        except KeyError:
+            self.logger.warning(f"Bad weather response {self.API_NAME}")
+            raise BadWeatherException(self.API_NAME)
+        except (requests.ConnectionError, requests.Timeout):
+            self.logger.warning(f"Error connecting {self.API_NAME}")
+            raise NoAPIConnectionException

@@ -1,80 +1,60 @@
-import tkinter as tk
-import logging
-from threading import Thread
+from kivy.uix.screenmanager import ScreenManager
+from kivy.config import Config
+from config import Config as AppConfig
+from kivy.app import App
+from kivy.core.window import Window
+from kivy.clock import Clock
+from kivy.properties import StringProperty
 
-from frames.search_frame import SearchFrame
-from frames.loading_frame import LoadingFrame
-from frames.status_frame import StatusFrame
+from screens.status import StatusScreen
+from screens.loading import LoadingScreen
+from screens.search import SearchScreen
 
-from handlers.weather_handlers.accuweather_handler import AccuWeatherHandler
-from handlers.weather_handlers.open_weather_handler import OpenWeatherHandler
-from handlers.weather_handlers.meta_weather_handler import MetaWeatherHandler
-from handlers.city_handlers.accuweather_city_handler import AccuWeatherCityHandler
 from handlers.city_handlers.open_weather_city_handler import OpenWeatherCityHandler
-from handlers.city_handlers.meta_weather_city_handler import MetaWeatherCityHandler
-from handlers.sun_handlers.open_weather_sun_handler import OpenWeatherSunHandler
 from handlers.sun_handlers.sunrise_sunset_sun_handler import SunriseSunsetSunHandler
+from handlers.weather_handlers.open_weather_handler import OpenWeatherHandler
 
-from config import Config
 
+class WeatherApp(App):
+    bg_start = StringProperty(AppConfig.BG_COLOR_PRIMARY[0])
+    bg_end = StringProperty(AppConfig.BG_COLOR_PRIMARY[1])
 
-class WeatherApp(tk.Tk):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.status_screen = None
+        self.search_screen = None
+        self.loading_screen = None
 
-        self.search_frame = SearchFrame(master=self)
-        self.loading_frame = LoadingFrame(self)
-        self.status_frame = StatusFrame(
-            root=self,
-            weather_handler_class=OpenWeatherHandler,
-            city_handler_class=OpenWeatherCityHandler,
-            sun_handler_class=SunriseSunsetSunHandler
+        self.screen_manager = None
+
+    def build(self):
+        Config.set('input', 'mouse', 'mouse, multitouch_on_demand')
+        Config.set('graphics', 'resizable', False)
+        Window.borderless = True
+
+        self.screen_manager = ScreenManager()
+
+        self.status_screen = StatusScreen(
+            OpenWeatherCityHandler,
+            SunriseSunsetSunHandler,
+            OpenWeatherHandler,
+
+            name="status"
         )
 
-        self.geometry(f"{Config.WIDTH}x{Config.HEIGHT}")
-        self.configure(bg=Config.BG_COLOR_PRIMARY)
-        self.resizable(False, False)
+        self.loading_screen = LoadingScreen(name="loading")
+        self.search_screen = SearchScreen(name="search")
 
-        logging.basicConfig(
-            format=Config.LOGGER_FORMAT,
-            level=Config.LOGGING_LEVEL,
-        )
+        self.loading_screen.animation_start()
 
-        self.logger = logging.getLogger("app")
-        self.logger.info("Starting app")
-        self.show_search_frame()
+        self.screen_manager.add_widget(self.search_screen)
+        self.screen_manager.add_widget(self.status_screen)
+        self.screen_manager.add_widget(self.loading_screen)
 
-    def show_search_frame(self, event=None):
-        self.logger.debug("Starting showing search frame")
-        self.search_frame.search_entry.focus()
-        self.loading_frame.pack_forget()
-        self.status_frame.pack_forget()
-        self.search_frame.pack()
-        self.search_frame.search_button.bind("<Button-1>", self.show_status_frame)
-        self.bind("<Return>", self.show_status_frame)
-        self.unbind("<BackSpace>")
-        self.logger.info("Showing search frame")
+        Clock.schedule_interval(self.status_screen.update_time, 0.5)
 
-    def load_weather(self, city_name):
-        self.logger.debug("Starting loading weather")
-        self.loading_frame.start_animation()
-        self.search_frame.pack_forget()
-        self.logger.info("Showing loading frame")
-        self.loading_frame.pack()
-        self.status_frame.update_weather(city_name)
-        self.loading_frame.pack_forget()
-        self.loading_frame.stop_animation()
-        self.logger.debug("Starting showing status frame")
-        self.status_frame.pack()
-        self.bind("<BackSpace>", self.show_search_frame)
-
-    def show_status_frame(self, event=None):
-        self.logger.debug("Starting gathering weather status")
-        self.status_frame.focus()
-        self.unbind("<Return>")
-        city_name = self.search_frame.get_city_name()
-        Thread(target=self.load_weather, args=(city_name,)).start()
+        return self.screen_manager
 
 
 if __name__ == '__main__':
-    WeatherApp().mainloop()
+    WeatherApp().run()
