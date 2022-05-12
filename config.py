@@ -5,27 +5,22 @@ class Config:
     OPEN_WEATHER_API_KEY = ""
     ACCUWEATHER_API_KEY = ""
 
-    WIDTH = 640
-    HEIGHT = 480
+    BG_COLOR_PRIMARY = "#bbb3d1", "#7b89cc",
+    FG_COLOR_PRIMARY = "#FFFFFF",
 
-    FONT = "Helvetica"
-
-    BG_COLOR_PRIMARY = "#949cd3"
-    FG_COLOR_PRIMARY = "#FFFFFF"
-
-    SUNSET_COLOR = "#df8976"
-    DUSK_COLOR = "#949cd3"
-    NOON_COLOR = "#90c9ef"
-    CLOUD_COLOR = "#96d6f3"
-    OVERCAST_COLOR = "#93abd8"
-    NIGHT_COLOR = "#3a5e99"
-    RAIN_NIGHT_COLOR = "#3e4858"
-    RAIN_NOON_COLOR = "#787fa3"
-    SNOW_COLOR = "#9d9d9d"
+    SUNSET_COLOR = "#e3a072", "#dd8078"
+    DUSK_COLOR = "#bbb3d1", "#7b89cc"
+    NOON_COLOR = "#bbdfd3", "#83c9f3"
+    CLOUD_COLOR = "#97dbf8", "#60c3f3"
+    OVERCAST_COLOR = "#c5b9bd", "#8990a3"
+    NIGHT_COLOR = "#3e64a0", "#21386a"
+    RAIN_NIGHT_COLOR = "#85929f", "#434d5d"
+    RAIN_NOON_COLOR = "#b2b9d4", "#8990b2"
+    SNOW_COLOR = "#c3beca", "#96a0af"
 
     ERROR_IMAGE = "images/storm.png"
-    ERROR_COLOR = "#d85c57"
+    ERROR_COLOR = "#dd797a", "#d96480"
 
     LOGGER_FORMAT = "%(asctime)s\t%(levelname)-7s\t%(name)-6s\t%(message)s"
-    LOGGING_LEVEL = DEBUG
+    LOGGING_LEVEL = ERROR
     LOGGING_FILE = "weather.log"
