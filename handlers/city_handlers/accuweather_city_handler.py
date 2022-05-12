@@ -46,7 +46,7 @@ class AccuWeatherCityHandler(BaseCityHandler):
             self.logger.info(f"Got current city request from {self.API_NAME}")
             if response.status_code == 503:
                 raise ServiceUnavailableException(self.API_NAME)
-            city_dict = response.json()
+            city_dict = response.json()[0]
             city = City(
                 name=city_dict["LocalizedName"],
                 woeid=city_dict["Key"],

@@ -75,24 +75,24 @@ class StatusScreen(Screen):
         if self.city:
             self.set_weather(self.city.name)
             self.ids.city_name.text = self.city.name
+            if self.weather:
+                self.ids.weather_status.text = self.weather.status.capitalize()
+                self.ids.weather_temp.text = f"{round(self.weather.temperature)}°"
+                self.ids.weather_image.source = self.weather.image
 
-            self.ids.weather_status.text = self.weather.status.capitalize()
-            self.ids.weather_temp.text = f"{round(self.weather.temperature)}°"
-            self.ids.weather_image.source = self.weather.image
+                self.ids.forecast_day_1.text = datetime.fromtimestamp(self.forecast[0].time).strftime('%a')
+                self.ids.forecast_temp_1.text = f"{round(self.forecast[0].temperature)}°"
 
-            self.ids.forecast_day_1.text = datetime.fromtimestamp(self.forecast[0].time).strftime('%a')
-            self.ids.forecast_temp_1.text = f"{round(self.forecast[0].temperature)}°"
+                self.ids.forecast_day_2.text = datetime.fromtimestamp(self.forecast[1].time).strftime('%a')
+                self.ids.forecast_temp_2.text = f"{round(self.forecast[1].temperature)}°"
 
-            self.ids.forecast_day_2.text = datetime.fromtimestamp(self.forecast[1].time).strftime('%a')
-            self.ids.forecast_temp_2.text = f"{round(self.forecast[1].temperature)}°"
+                self.ids.forecast_day_3.text = datetime.fromtimestamp(self.forecast[2].time).strftime('%a')
+                self.ids.forecast_temp_3.text = f"{round(self.forecast[2].temperature)}°"
 
-            self.ids.forecast_day_3.text = datetime.fromtimestamp(self.forecast[2].time).strftime('%a')
-            self.ids.forecast_temp_3.text = f"{round(self.forecast[2].temperature)}°"
+                self.ids.forecast_day_4.text = datetime.fromtimestamp(self.forecast[3].time).strftime('%a')
+                self.ids.forecast_temp_4.text = f"{round(self.forecast[3].temperature)}°"
 
-            self.ids.forecast_day_4.text = datetime.fromtimestamp(self.forecast[3].time).strftime('%a')
-            self.ids.forecast_temp_4.text = f"{round(self.forecast[3].temperature)}°"
-
-            Clock.schedule_once(self.set_background)
+                Clock.schedule_once(self.set_background)
 
     def _update_weather_animated(self):
         self.refresh_animation_start()
