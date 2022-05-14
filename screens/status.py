@@ -35,8 +35,6 @@ class StatusScreen(Screen):
 
     def set_weather(self, city_name):
         try:
-            self.city = None
-            self.weather = None
             self.set_city(city_name)
             sun_info = self.sun_handler_class(self.city).get_sun_info()
             weather_handler = self.weather_handler_class(self.city)

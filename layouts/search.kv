@@ -1,10 +1,11 @@
+#:import RiseInTransition kivy.uix.screenmanager.RiseInTransition
+
 <SearchScreen>
     GradientBackground:
         orientation: "vertical"
         padding: 30
         width: root.width
         height: root.height
-
         BoxLayout:
             width: root.width
             orientation: 'vertical'
@@ -23,7 +24,7 @@
                     size_hint: None, None
                     size: 40, 40
                     on_release:
-                        root.manager.transition.direction = "left"
+                        root.manager.transition = RiseInTransition()
                         root.manager.current = "configuration"
 
                     Image:
@@ -70,6 +71,7 @@
                             font_size: 48
                             width: 350
                             height: 70
+                            write_tab: False
                             multiline: False
                             background_normal: "white.png"
                             background_active: "white.png"

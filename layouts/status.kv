@@ -1,10 +1,15 @@
+#:import SlideTransition kivy.uix.screenmanager.SlideTransition
+#:import FallOutTransition kivy.uix.screenmanager.FallOutTransition
+#:import RiseInTransition kivy.uix.screenmanager.RiseInTransition
+
+
+
 <StatusScreen>
     GradientBackground:
-        width: root.width
-        height: root.height
         orientation: "vertical"
         padding: 30
-
+        width: root.width
+        height: root.height
         GridLayout:
             id: status_grid
             cols: 2
@@ -42,10 +47,11 @@
                         halign: "left"
                     Widget:
 
-                BoxLayout:
+                GridLayout:
                     id: forecast_layout
-                    orientation: "horizontal"
-                    spacing: 0
+                    spacing: 10
+                    rows: 1
+                    size_hint_y: None
 
                     BoxLayout:
                         orientation: "vertical"
@@ -154,7 +160,7 @@
                         size_hint: None, None
                         size: 40, 40
                         on_release:
-                            root.manager.transition.direction = "left"
+                            root.manager.transition = SlideTransition(direction="right")
                             root.manager.current = "search"
                         Image:
                             source: "images/navigation/back.png"
@@ -181,7 +187,7 @@
                         size_hint: None, None
                         size: 40, 40
                         on_release:
-                            root.manager.transition.direction = "left"
+                            root.manager.transition = RiseInTransition()
                             root.manager.current = "configuration"
                         Image:
                             source: "images/navigation/menu.png"

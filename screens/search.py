@@ -2,7 +2,7 @@ from threading import Thread
 
 from kivy.app import App
 from kivy.clock import Clock
-from kivy.uix.screenmanager import Screen
+from kivy.uix.screenmanager import Screen, SlideTransition
 
 
 class SearchScreen(Screen):
@@ -12,11 +12,11 @@ class SearchScreen(Screen):
 
     def load_city(self):
         Thread(target=self._load_weather).start()
-        self.app.screen_manager.direction = "left"
+        self.app.screen_manager.transition = SlideTransition(direction="left")
         self.app.screen_manager.current = "loading"
 
     def _set_screen_status(self, *args):
-        self.app.screen_manager.direction = "left"
+        self.app.screen_manager.transition = SlideTransition(direction="left")
         self.app.screen_manager.current = "status"
 
     def _load_weather(self):

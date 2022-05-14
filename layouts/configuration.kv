@@ -1,4 +1,8 @@
+#:import FallOutTransition kivy.uix.screenmanager.FallOutTransition
+
+
 <ConfigurationScreen>
+    sm: app.screen_manager
     GradientBackground:
         orientation: "vertical"
         padding: 10
@@ -20,12 +24,10 @@
                 size_hint: None, None
                 size: 40, 40
                 on_release:
-                    root.manager.transition.direction = "left"
+                    root.manager.transition = FallOutTransition()
                     root.manager.current = root.manager.previous()
-
-
                 Image:
-                    source: "images/navigation/menu.png"
+                    source: "images/navigation/back.png"
                     size_hint: None, None
                     size: 40, 40
                     x: self.parent.x
@@ -43,6 +45,9 @@
                     x: self.parent.x
                     y: self.parent.y
         ScrollView:
+            bar_width: 6
+            bar_inactive_color: 1, 1, 1, 0.2
+            bar_color: 1, 1, 1, 0.75
             GridLayout:
                 cols: 1
                 padding: 100, 60
@@ -86,7 +91,7 @@
                             cols: 2
                             height: self.minimum_height
                             ToggleButton:
-                                text: "12 hours"
+                                text: "24 hours"
                                 group: "time_toggle"
                                 state: "down"
                                 size_hint: None, None,
@@ -98,7 +103,7 @@
                                 background_down: ""
                                 background_color: (1,1,1,0.25) if self.state == 'normal' else (1,1,1,0.75)
                             ToggleButton:
-                                text: "24 hours"
+                                text: "12 hours"
                                 group: "time_toggle"
                                 size_hint: None, None,
                                 color: app.bg_end
