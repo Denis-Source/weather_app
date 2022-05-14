@@ -89,8 +89,9 @@ class WeatherApp(App):
 
     def _key_handler(self, instance, key, *args):
         if key is 8:
-            self.set_previous_screen()
-            return True
+            if not  self.configuration_screen.ids.city_input.focus:
+                self.set_previous_screen()
+                return True
         elif key is 9:
             if self.screen_manager.current == "search":
                 self.search_screen.ids.city_input.focus = True

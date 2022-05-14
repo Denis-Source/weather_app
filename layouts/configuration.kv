@@ -181,7 +181,7 @@
                         size_hint_y: None
                         spacing: 20
                         Label:
-                            text: "city geolocation:"
+                            text: "geolocation:"
                             font_size: 28
                             size_hint_y: None
                             text_size: self.width, self.height
@@ -249,7 +249,7 @@
                             background_down: ""
                             background_color: (1,1,1,0.6)
                     Label:
-                        text: "Select from different weather, city geolocation and sunset/sunrise apis. Note: some require api keys and have limited daily access, some are not compatible with each other."
+                        text: "Select from different weather, city geolocation and sunset/sunrise apis. Note: some api require keys and have limited daily access and some are not compatible with each other."
                         font_size: 24
                         size_hint_y: None
                         text_size: self.width, None
@@ -307,10 +307,13 @@
                         TextInput:
                             id: city_input
                             size_hint: None, None
-                            font_size: 32
+                            font_size: 28
                             width: 360
                             height: 50
+                            text_size: self.size
                             multiline: False
+                            hint_text: "Enter name"
+                            hint_text_color: get_color_from_hex(app.bg_start)
                             background_normal: "white.png"
                             background_active: "white.png"
                             background_color: 1,1,1,0.75
@@ -319,7 +322,7 @@
 
 
                     Label:
-                        text: "If selected weather app will not ask a location in advance. The weather of the specified location in the entry will be show instead."
+                        text: "If selected the weather app will not ask a location in advance. The weather of the specified location in the entry will be show instead."
                         font_size: 24
                         size_hint_y: None
                         text_size: self.width, None
