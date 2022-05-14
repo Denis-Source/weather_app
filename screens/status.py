@@ -4,24 +4,12 @@ from threading import Thread
 
 from kivy.animation import Animation
 from kivy.app import App
-from kivy.graphics.vertex_instructions import Rectangle
-from kivy.properties import NumericProperty, Clock
+from kivy.properties import Clock
 from kivy.uix.screenmanager import Screen
-from kivy.uix.image import Image
-from kivy.utils import get_color_from_hex
-from kivy_gradient import Gradient
 
 from handlers.errors import WeatherAppException
 
 from config import Config
-
-
-class Loading(Image):
-    angle = NumericProperty(0)
-
-    def on_angle(self, item, angle):
-        if angle == 360:
-            item.angle = 0
 
 
 class StatusScreen(Screen):
@@ -75,7 +63,11 @@ class StatusScreen(Screen):
     def update_weather(self):
         if self.city:
             self.set_weather(self.city.name)
-            self.ids.city_name.text = self.city.name
+            if len(self.city.name) > 13:
+                self.ids.city_name.text = f"{self.city.name[:11]}..."
+            else:
+                self.ids.city_name.text = self.city.name
+
             if self.weather:
                 self.ids.weather_status.text = self.weather.status.capitalize()
                 self.ids.weather_temp.text = f"{round(self.weather.temperature)}°"

@@ -1,0 +1,93 @@
+<SearchScreen>
+    GradientBackground:
+        orientation: "vertical"
+        padding: 30
+        width: root.width
+        height: root.height
+
+        BoxLayout:
+            width: root.width
+            orientation: 'vertical'
+            height: root.height
+            BoxLayout:
+                size_hint: None, None
+                height: 40
+                width: root.width - 60
+                orientation: "horizontal"
+                halign: "right"
+                spacing: 10
+                Widget
+                Button:
+                    id: menu_button
+                    background_color: (0, 0, 0, 0)
+                    size_hint: None, None
+                    size: 40, 40
+                    on_release:
+                        root.manager.transition.direction = "left"
+                        root.manager.current = "configuration"
+
+                    Image:
+                        source: "images/navigation/menu.png"
+                        size_hint: None, None
+                        size: 40, 40
+                        x: self.parent.x
+                        y: self.parent.y
+                Button:
+                    id: close_button
+                    background_color: (0, 0, 0, 0)
+                    size_hint: None, None
+                    size: 40, 40
+                    on_release: app.stop()
+
+                    Image:
+                        source: "images/navigation/close.png"
+                        size_hint: None, None
+                        size: 40, 40
+                        x: self.parent.x
+                        y: self.parent.y
+
+
+            AnchorLayout:
+                padding: 0, 0, 0, 30
+                anchor_x: "center"
+                anchor_y: "center"
+                BoxLayout:
+                    spacing: 10
+                    size_hint: None, None
+                    width: 400
+                    orientation: "vertical"
+                    Label:
+                        text: "Enter Location:"
+                        font_size: 40
+
+                    BoxLayout:
+                        spacing: 10
+                        size_hint: None, None
+                        width: 400
+                        TextInput:
+                            id: city_input
+                            size_hint: None, None
+                            font_size: 48
+                            width: 350
+                            height: 70
+                            multiline: False
+                            background_normal: "white.png"
+                            background_active: "white.png"
+
+                            foreground_color: get_color_from_hex(app.bg_start)
+                            cursor_color: get_color_from_hex(app.bg_start)
+
+
+                        Button:
+                            id: close_button
+                            background_color: (0, 0, 0, 0)
+                            size_hint: None, None
+                            size: 40, 40
+                            on_release: root.load_city()
+
+                            Image:
+                                source: "images/navigation/search.png"
+                                size_hint: None, None
+                                size: 70, 70
+                                x: self.parent.x
+                                y: self.parent.y

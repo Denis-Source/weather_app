@@ -1,0 +1,235 @@
+<StatusScreen>
+    GradientBackground:
+        width: root.width
+        height: root.height
+        orientation: "vertical"
+        padding: 30
+
+        GridLayout:
+            id: status_grid
+            cols: 2
+            BoxLayout:
+                orientation: "vertical"
+                BoxLayout:
+                    orientation: "vertical"
+                    spacing: 10
+                    Label:
+                        id: city_name
+                        text: "City name"
+                        font_size: 60
+                        size_hint_y: None
+                        height: "60dp"
+                        text_size: self.width, None
+                        halign: "left"
+
+                    Label:
+                        id: city_day
+                        text: "Monday"
+                        font_size: 48
+                        size_hint_y: None
+                        height: "48dp"
+                        text_size: self.width, None
+                        halign: "left"
+
+
+                    Label:
+                        id: city_time
+                        text: "5:40"
+                        font_size: 60
+                        size_hint_y: None
+                        height: "60dp"
+                        text_size: self.width, None
+                        halign: "left"
+                    Widget:
+
+                BoxLayout:
+                    id: forecast_layout
+                    orientation: "horizontal"
+                    spacing: 0
+
+                    BoxLayout:
+                        orientation: "vertical"
+                        spacing: 10
+                        size_hint: None, None
+
+                        Label:
+                            id: forecast_day_1
+                            text: "Thu"
+                            font_size: 48
+                            size_hint_y: None
+                            height: "48dp"
+                            text_size: self.width, None
+                            halign: "left"
+
+                        Label:
+                            id: forecast_temp_1
+                            text: "25°"
+                            font_size: 32
+                            size_hint_y: None
+                            height: "32dp"
+                            text_size: self.width, None
+                            halign: "left"
+
+                    BoxLayout:
+                        orientation: "vertical"
+                        spacing: 10
+                        size_hint: None, None
+
+                        Label:
+                            id: forecast_day_2
+                            text: "Thu"
+                            font_size: 48
+                            size_hint_y: None
+                            height: "48dp"
+                            text_size: self.width, None
+                            halign: "left"
+
+                        Label:
+                            id: forecast_temp_2
+                            text: "25°"
+                            font_size: 32
+                            size_hint_y: None
+                            height: "32dp"
+                            text_size: self.width, None
+                            halign: "left"
+
+                    BoxLayout:
+                        orientation: "vertical"
+                        spacing: 10
+                        size_hint: None, None
+
+                        Label:
+                            id: forecast_day_3
+                            text: "Thu"
+                            font_size: 48
+                            size_hint_y: None
+                            height: "48dp"
+                            text_size: self.width, None
+                            halign: "left"
+
+                        Label:
+                            id: forecast_temp_3
+                            text: "25°"
+                            font_size: 32
+                            size_hint_y: None
+                            height: "32dp"
+                            text_size: self.width, None
+                            halign: "left"
+
+                    BoxLayout:
+                        orientation: "vertical"
+                        spacing: 10
+                        size_hint: None, None
+
+                        Label:
+                            id: forecast_day_4
+                            text: "Thu"
+                            font_size: 48
+                            size_hint_y: None
+                            height: "48dp"
+                            text_size: self.width, None
+                            halign: "left"
+
+                        Label:
+                            id: forecast_temp_4
+                            text: "25°"
+                            font_size: 32
+                            size_hint_y: None
+                            height: "32dp"
+                            text_size: self.width, None
+                            halign: "left"
+
+            BoxLayout:
+                orientation: "vertical"
+                spacing: 10
+                BoxLayout:
+                    spacing: 10
+                    size_hint: 1, None
+                    orientation: "horizontal"
+                    height: 40
+                    Widget
+                    Button:
+                        id: back_button
+                        background_color: (0, 0, 0, 0)
+                        size_hint: None, None
+                        size: 40, 40
+                        on_release:
+                            root.manager.transition.direction = "left"
+                            root.manager.current = "search"
+                        Image:
+                            source: "images/navigation/back.png"
+                            size_hint: None, None
+                            size: 40, 40
+                            x: self.parent.x
+                            y: self.parent.y
+                    Button:
+                        id: refresh_button
+                        background_color: (0, 0, 0, 0)
+                        size_hint: None, None
+                        size: 40, 40
+                        on_release: root.refresh_weather()
+                        Loading:
+                            id: refresh_button_image
+                            source: "images/navigation/refresh.png"
+                            size_hint: None, None
+                            size: 40, 40
+                            x: self.parent.x
+                            y: self.parent.y
+                    Button:
+                        id: menu_button
+                        background_color: (0, 0, 0, 0)
+                        size_hint: None, None
+                        size: 40, 40
+                        on_release:
+                            root.manager.transition.direction = "left"
+                            root.manager.current = "configuration"
+                        Image:
+                            source: "images/navigation/menu.png"
+                            size_hint: None, None
+                            size: 40, 40
+                            x: self.parent.x
+                            y: self.parent.y
+                    Button:
+                        id: close_button
+                        background_color: (0, 0, 0, 0)
+                        size_hint: None, None
+                        size: 40, 40
+                        on_release: app.stop()
+
+                        Image:
+                            source: "images/navigation/close.png"
+                            size_hint: None, None
+                            size: 40, 40
+                            x: self.parent.x
+                            y: self.parent.y
+
+                BoxLayout:
+                    orientation: "vertical"
+                    spacing: 10
+                    padding: 0, 5, 0, 0
+                    Label:
+                        id: weather_status
+                        text: "Status"
+                        font_size: 48
+                        size_hint_y: None
+                        height: "48dp"
+                        text_size: self.width, None
+                        halign: "right"
+                    Label:
+                        id: weather_temp
+                        text: "25°"
+                        font_size: 60
+                        size_hint_y: None
+                        height: "60dp"
+                        text_size: self.width, None
+                        halign: "right"
+
+                    AnchorLayout:
+                        anchor_x: "right"
+                        anchor_y: "top"
+                        AsyncImage:
+                            id: weather_image
+                            source: "images/sunny.png"
+                            size_hint: None, None
+                            size: 300, 300
+                    Widget:

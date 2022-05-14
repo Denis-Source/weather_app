@@ -1,0 +1,339 @@
+<ConfigurationScreen>
+    GradientBackground:
+        orientation: "vertical"
+        padding: 10
+        width: root.width
+        height: root.height
+
+        BoxLayout:
+            size_hint: None, None
+            height: 80
+            padding: 20
+            width: root.width - 20
+            orientation: "horizontal"
+            halign: "right"
+            spacing: 10
+            Widget
+            Button:
+                id: menu_button
+                background_color: (0, 0, 0, 0)
+                size_hint: None, None
+                size: 40, 40
+                on_release:
+                    root.manager.transition.direction = "left"
+                    root.manager.current = root.manager.previous()
+
+
+                Image:
+                    source: "images/navigation/menu.png"
+                    size_hint: None, None
+                    size: 40, 40
+                    x: self.parent.x
+                    y: self.parent.y
+            Button:
+                id: close_button
+                background_color: (0, 0, 0, 0)
+                size_hint: None, None
+                size: 40, 40
+                on_release: app.stop()
+                Image:
+                    source: "images/navigation/close.png"
+                    size_hint: None, None
+                    size: 40, 40
+                    x: self.parent.x
+                    y: self.parent.y
+        ScrollView:
+            GridLayout:
+                cols: 1
+                padding: 100, 60
+                size_hint: None, None
+                width: root.width - 20
+                height: self.minimum_height
+                spacing: 60
+                Label:
+                    text: "Configuration"
+                    font_size: 48
+                    size_hint_y: None
+                    height: "48dp"
+                    text_size: self.width, None
+                    halign: "center"
+                GridLayout:
+                    cols: 1
+                    spacing: 20
+                    height: self.minimum_height
+                    size_hint_y: None
+                    Label:
+                        text: "Format"
+                        font_size: 36
+                        size_hint_y: None
+                        height: "36dp"
+                        text_size: self.width, None
+                        halign: "center"
+                    GridLayout:
+                        cols: 2
+                        height: self.minimum_height
+                        size_hint_y: None
+                        spacing: 20
+                        Label:
+                            text: "time:"
+                            font_size: 28
+                            size_hint_y: None
+                            text_size: self.width, self.height
+                            height: 50
+                            halign: "right"
+                            valign: "center"
+                        GridLayout:
+                            cols: 2
+                            height: self.minimum_height
+                            ToggleButton:
+                                text: "12 hours"
+                                group: "time_toggle"
+                                state: "down"
+                                size_hint: None, None,
+                                width: 100
+                                height: 50
+                                allow_no_selection: False
+                                color: app.bg_end
+                                background_normal: ""
+                                background_down: ""
+                                background_color: (1,1,1,0.25) if self.state == 'normal' else (1,1,1,0.75)
+                            ToggleButton:
+                                text: "24 hours"
+                                group: "time_toggle"
+                                size_hint: None, None,
+                                color: app.bg_end
+                                width: 100
+                                height: 50
+                                allow_no_selection: False
+                                background_normal: ""
+                                background_down: ""
+                                background_color: (1,1,1,0.25) if self.state == 'normal' else (1,1,1,0.75)
+                    GridLayout:
+                        cols: 2
+                        height: self.minimum_height
+                        size_hint_y: None
+                        spacing: 20
+                        Label:
+                            text: "temperature:"
+                            font_size: 28
+                            size_hint_y: None
+                            text_size: self.width, self.height
+                            height: 50
+                            halign: "right"
+                            valign: "center"
+                        GridLayout:
+                            height: self.minimum_height
+                            cols: 2
+                            ToggleButton:
+                                text: "Celsius"
+                                group: "temperature_toggle"
+                                state: "down"
+                                size_hint: None, None,
+                                width: 100
+                                height: 50
+                                allow_no_selection: False
+                                color: app.bg_end
+                                background_normal: ""
+                                background_down: ""
+                                background_color: (1,1,1,0.25) if self.state == 'normal' else (1,1,1,0.75)
+
+                            ToggleButton:
+                                text: "Fahrenheit"
+                                group: "temperature_toggle"
+                                size_hint: None, None,
+                                color: app.bg_end
+                                width: 100
+                                height: 50
+                                allow_no_selection: False
+                                background_normal: ""
+                                background_down: ""
+                                background_color: (1,1,1,0.25) if self.state == 'normal' else (1,1,1,0.75)
+                    Label:
+                        text: "Select time or temperature display units."
+                        font_size: 24
+                        height: "24dp"
+                        size_hint_y: None
+                        text_size: self.width, None
+                        halign: "center"
+                        color: 1, 1, 1, 0.75
+
+
+                GridLayout:
+                    cols: 1
+                    spacing: 20
+                    height: self.minimum_height
+                    size_hint_y: None
+                    Label:
+                        text: "APIs"
+                        font_size: 36
+                        size_hint_y: None
+                        height: "36dp"
+                        text_size: self.width, None
+                        halign: "center"
+                    GridLayout:
+                        cols: 2
+                        height: self.minimum_height
+                        size_hint_y: None
+                        spacing: 20
+                        Label:
+                            text: "city geolocation:"
+                            font_size: 28
+                            size_hint_y: None
+                            text_size: self.width, self.height
+                            height: 50
+                            halign: "right"
+                            valign: "center"
+                        Button:
+                            text: "Selected api"
+                            size_hint: None, None,
+                            color: app.bg_end
+                            font_size: 20
+                            width: 300
+                            height: 50
+                            allow_no_selection: False
+                            background_normal: ""
+                            background_down: ""
+                            background_color: (1,1,1,0.6)
+
+                    GridLayout:
+                        cols: 2
+                        height: self.minimum_height
+                        size_hint_y: None
+                        spacing: 20
+                        Label:
+                            text: "weather:"
+                            font_size: 28
+                            size_hint_y: None
+                            text_size: self.width, self.height
+                            height: 50
+                            halign: "right"
+                            valign: "center"
+                        Button:
+                            text: "Selected api"
+                            size_hint: None, None,
+                            color: app.bg_end
+                            font_size: 20
+                            width: 300
+                            height: 50
+                            allow_no_selection: False
+                            background_normal: ""
+                            background_down: ""
+                            background_color: (1,1,1,0.6)
+                    GridLayout:
+                        cols: 2
+                        height: self.minimum_height
+                        size_hint_y: None
+                        spacing: 20
+                        Label:
+                            text: "sunrise/sunset:"
+                            font_size: 28
+                            size_hint_y: None
+                            text_size: self.width, self.height
+                            height: 50
+                            halign: "right"
+                            valign: "center"
+                        Button:
+                            text: "Selected api"
+                            size_hint: None, None,
+                            color: app.bg_end
+                            font_size: 20
+                            width: 300
+                            height: 50
+                            allow_no_selection: False
+                            background_normal: ""
+                            background_down: ""
+                            background_color: (1,1,1,0.6)
+                    Label:
+                        text: "Select from different weather, city geolocation and sunset/sunrise apis. Note: some require api keys and have limited daily access, some are not compatible with each other."
+                        font_size: 24
+                        size_hint_y: None
+                        text_size: self.width, None
+                        halign: "center"
+                        color: 1, 1, 1, 0.75
+
+                GridLayout:
+                    cols: 1
+                    spacing: 20
+                    padding: 0, 0, 0, 30
+                    height: self.minimum_height
+                    size_hint_y: None
+                    Label:
+                        text: "Preferred city"
+                        font_size: 36
+                        size_hint_y: None
+                        height: "36dp"
+                        text_size: self.width, None
+                        halign: "center"
+                    GridLayout:
+                        cols: 2
+                        height: self.minimum_height
+                        size_hint_y: None
+                        spacing: 20
+                        GridLayout:
+                            cols: 2
+                            height: self.minimum_height
+                            width: self.minimum_width
+                            size_hint: None, None
+
+                            ToggleButton:
+                                text: "On"
+                                group: "auto_city_toggle"
+                                state: "down"
+                                size_hint: None, None,
+                                width: 100
+                                height: 50
+                                allow_no_selection: False
+                                color: app.bg_end
+                                background_normal: ""
+                                background_down: ""
+                                background_color: (1,1,1,0.25) if self.state == 'normal' else (1,1,1,0.75)
+
+                            ToggleButton:
+                                text: "Off"
+                                group: "auto_city_toggle"
+                                size_hint: None, None,
+                                color: app.bg_end
+                                width: 100
+                                height: 50
+                                allow_no_selection: False
+                                background_normal: ""
+                                background_down: ""
+                                background_color: (1,1,1,0.25) if self.state == 'normal' else (1,1,1,0.75)
+                        TextInput:
+                            id: city_input
+                            size_hint: None, None
+                            font_size: 32
+                            width: 360
+                            height: 50
+                            multiline: False
+                            background_normal: "white.png"
+                            background_active: "white.png"
+                            background_color: 1,1,1,0.75
+                            foreground_color: get_color_from_hex(app.bg_end)
+                            cursor_color: get_color_from_hex(app.bg_end)
+
+
+                    Label:
+                        text: "If selected weather app will not ask a location in advance. The weather of the specified location in the entry will be show instead."
+                        font_size: 24
+                        size_hint_y: None
+                        text_size: self.width, None
+                        halign: "center"
+                        color: 1, 1, 1, 0.75
+
+                AnchorLayout:
+                    Button:
+                        id: save_configuration_button
+                        text: "Save"
+                        size_hint: None, None,
+                        color: app.bg_end
+                        font_size: 32
+                        width: 300
+                        height: 60
+                        halign: "center"
+                        background_normal: ""
+                        background_down: ""
+                        background_color: (1,1,1,0.6)
+                        on_release:
+                            root.manager.transition.direction = "right"
+                            root.manager.current = root.manager.previous()
