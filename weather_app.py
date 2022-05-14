@@ -3,7 +3,7 @@ from os import listdir
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
-from kivy.uix.screenmanager import ScreenManager, FallOutTransition, SlideTransition
+from kivy.uix.screenmanager import ScreenManager, FallOutTransition, SlideTransition, RiseInTransition
 from kivy.config import Config
 from config import Config as AppConfig
 from kivy.app import App
@@ -88,8 +88,8 @@ class WeatherApp(App):
         return self.screen_manager
 
     def _key_handler(self, instance, key, *args):
-        if key is 8:
-            if not  self.configuration_screen.ids.city_input.focus:
+        if key in (8, 27):
+            if not self.configuration_screen.ids.city_input.focus:
                 self.set_previous_screen()
                 return True
         elif key is 9:
@@ -102,10 +102,14 @@ class WeatherApp(App):
     def set_previous_screen(self):
         if self.screen_manager.current == "configuration":
             self.screen_manager.transition = FallOutTransition()
-            self.screen_manager.current = self.screen_manager.previous()
+            self.screen_manager.current = "search"
         elif self.screen_manager.current == "status":
             self.screen_manager.transition = SlideTransition(direction="right")
             self.screen_manager.current = "search"
+
+    def open_settings(self, *args):
+        self.screen_manager.transition = RiseInTransition()
+        self.screen_manager.current = "configuration"
 
 
 if __name__ == '__main__':

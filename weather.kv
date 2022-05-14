@@ -17,3 +17,15 @@
             size: self.size
             pos: self.pos
             texture: Gradient.vertical(get_color_from_hex(app.bg_start), get_color_from_hex(app.bg_end))
+
+<APIOption>:
+    size_hint: None, None,
+    color: app.bg_end
+    font_size: 20
+    width: 300
+    height: 50
+    background_normal: ""
+    background_down: ""
+    background_color: (1,1,1,0.9)
+    border: 10, 10, 10, 10
+    foreground_color: get_color_from_hex(app.bg_start)

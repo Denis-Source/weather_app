@@ -25,7 +25,7 @@
                 size: 40, 40
                 on_release:
                     root.manager.transition = FallOutTransition()
-                    root.manager.current = root.manager.previous()
+                    root.manager.current = "search"
                 Image:
                     source: "images/navigation/back.png"
                     size_hint: None, None
@@ -91,9 +91,9 @@
                             cols: 2
                             height: self.minimum_height
                             ToggleButton:
+                                id: toggle_time_24
                                 text: "24 hours"
                                 group: "time_toggle"
-                                state: "down"
                                 size_hint: None, None,
                                 width: 100
                                 height: 50
@@ -103,6 +103,7 @@
                                 background_down: ""
                                 background_color: (1,1,1,0.25) if self.state == 'normal' else (1,1,1,0.75)
                             ToggleButton:
+                                id: toggle_time_12
                                 text: "12 hours"
                                 group: "time_toggle"
                                 size_hint: None, None,
@@ -130,9 +131,9 @@
                             height: self.minimum_height
                             cols: 2
                             ToggleButton:
+                                id: toggle_temp_cels
                                 text: "Celsius"
                                 group: "temperature_toggle"
-                                state: "down"
                                 size_hint: None, None,
                                 width: 100
                                 height: 50
@@ -143,6 +144,7 @@
                                 background_color: (1,1,1,0.25) if self.state == 'normal' else (1,1,1,0.75)
 
                             ToggleButton:
+                                id: toggle_temp_fahr
                                 text: "Fahrenheit"
                                 group: "temperature_toggle"
                                 size_hint: None, None,
@@ -159,7 +161,7 @@
                         height: "24dp"
                         size_hint_y: None
                         text_size: self.width, None
-                        halign: "center"
+                        halign: "justify"
                         color: 1, 1, 1, 0.75
 
 
@@ -188,18 +190,16 @@
                             height: 50
                             halign: "right"
                             valign: "center"
-                        Button:
-                            text: "Selected api"
+                        APISpinner:
+                            id: api_geo_selection
                             size_hint: None, None,
                             color: app.bg_end
                             font_size: 20
                             width: 300
                             height: 50
-                            allow_no_selection: False
                             background_normal: ""
                             background_down: ""
                             background_color: (1,1,1,0.6)
-
                     GridLayout:
                         cols: 2
                         height: self.minimum_height
@@ -213,14 +213,13 @@
                             height: 50
                             halign: "right"
                             valign: "center"
-                        Button:
-                            text: "Selected api"
+                        APISpinner:
+                            id: api_weather_selection
                             size_hint: None, None,
                             color: app.bg_end
                             font_size: 20
                             width: 300
                             height: 50
-                            allow_no_selection: False
                             background_normal: ""
                             background_down: ""
                             background_color: (1,1,1,0.6)
@@ -237,14 +236,13 @@
                             height: 50
                             halign: "right"
                             valign: "center"
-                        Button:
-                            text: "Selected api"
+                        APISpinner:
+                            id: api_sun_selection
                             size_hint: None, None,
                             color: app.bg_end
                             font_size: 20
                             width: 300
                             height: 50
-                            allow_no_selection: False
                             background_normal: ""
                             background_down: ""
                             background_color: (1,1,1,0.6)
@@ -253,7 +251,7 @@
                         font_size: 24
                         size_hint_y: None
                         text_size: self.width, None
-                        halign: "center"
+                        halign: "justify"
                         color: 1, 1, 1, 0.75
 
                 GridLayout:
@@ -281,9 +279,9 @@
                             size_hint: None, None
 
                             ToggleButton:
+                                id: auto_city_on_toggle
                                 text: "On"
                                 group: "auto_city_toggle"
-                                state: "down"
                                 size_hint: None, None,
                                 width: 100
                                 height: 50
@@ -294,6 +292,7 @@
                                 background_color: (1,1,1,0.25) if self.state == 'normal' else (1,1,1,0.75)
 
                             ToggleButton:
+                                id: auto_city_off_toggle
                                 text: "Off"
                                 group: "auto_city_toggle"
                                 size_hint: None, None,
@@ -305,9 +304,10 @@
                                 background_down: ""
                                 background_color: (1,1,1,0.25) if self.state == 'normal' else (1,1,1,0.75)
                         TextInput:
-                            id: city_input
+                            id: auto_city_input
                             size_hint: None, None
-                            font_size: 28
+                            font_size: 24
+                            padding: 10, 10
                             width: 360
                             height: 50
                             text_size: self.size
@@ -316,6 +316,7 @@
                             hint_text_color: get_color_from_hex(app.bg_start)
                             background_normal: "white.png"
                             background_active: "white.png"
+                            selection_color: get_color_from_hex(app.bg_start + "88")
                             background_color: 1,1,1,0.75
                             foreground_color: get_color_from_hex(app.bg_end)
                             cursor_color: get_color_from_hex(app.bg_end)
@@ -326,7 +327,7 @@
                         font_size: 24
                         size_hint_y: None
                         text_size: self.width, None
-                        halign: "center"
+                        halign: "justify"
                         color: 1, 1, 1, 0.75
 
                 AnchorLayout:
@@ -344,4 +345,5 @@
                         background_color: (1,1,1,0.6)
                         on_release:
                             root.manager.transition.direction = "right"
+                            # TODO
                             root.manager.current = root.manager.previous()
