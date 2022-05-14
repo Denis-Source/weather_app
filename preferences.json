@@ -1,0 +1,9 @@
+{
+  "time_format": 12,
+  "temp_format": "C",
+  "city_api": "OpenWeather",
+  "weather_api": "MetaWeather",
+  "sun_api": "Sunrise Sunset",
+  "preferred_city": "",
+  "preferred_city_load": false
+}

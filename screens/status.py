@@ -35,6 +35,7 @@ class StatusScreen(Screen):
 
     def set_weather(self, city_name):
         try:
+            self.weather = None
             self.set_city(city_name)
             sun_info = self.sun_handler_class(self.city).get_sun_info()
             weather_handler = self.weather_handler_class(self.city)
@@ -43,7 +44,6 @@ class StatusScreen(Screen):
             self.weather.update_state(sun_info)
         except WeatherAppException as e:
             self.city = None
-            self.weather = None
             self.set_error(e.message)
 
     def refresh_weather(self):
