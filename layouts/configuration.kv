@@ -194,7 +194,7 @@
                             id: api_geo_selection
                             size_hint: None, None,
                             color: app.bg_end
-                            font_size: 20
+                            font_size: 16
                             width: 300
                             height: 50
                             background_normal: ""
@@ -217,7 +217,7 @@
                             id: api_weather_selection
                             size_hint: None, None,
                             color: app.bg_end
-                            font_size: 20
+                            font_size: 16
                             width: 300
                             height: 50
                             background_normal: ""
@@ -240,14 +240,14 @@
                             id: api_sun_selection
                             size_hint: None, None,
                             color: app.bg_end
-                            font_size: 20
+                            font_size: 16
                             width: 300
                             height: 50
                             background_normal: ""
                             background_down: ""
                             background_color: (1,1,1,0.6)
                     Label:
-                        text: "Select from different weather, city geolocation and sunset/sunrise apis. Note: some api require keys and have limited daily access and some are not compatible with each other."
+                        text: "Select from different weather, city geolocation and sunset/sunrise apis. Note: some APIs require keys and have limited daily access and some are not compatible with each other."
                         font_size: 24
                         size_hint_y: None
                         text_size: self.width, None
@@ -303,11 +303,12 @@
                                 background_normal: ""
                                 background_down: ""
                                 background_color: (1,1,1,0.25) if self.state == 'normal' else (1,1,1,0.75)
+                                on_release: root.ids.auto_city_input.text = ""
                         TextInput:
                             id: auto_city_input
                             size_hint: None, None
-                            font_size: 24
-                            padding: 10, 10
+                            font_size: 20
+                            padding: 12, 12
                             width: 360
                             height: 50
                             text_size: self.size
@@ -323,7 +324,7 @@
 
 
                     Label:
-                        text: "If selected the weather app will not ask a location in advance. The weather of the specified location in the entry will be show instead."
+                        text: "If selected, the weather app will not ask for a location in advance. The weather of the specified location in the entry will be shown instead."
                         font_size: 24
                         size_hint_y: None
                         text_size: self.width, None
@@ -345,5 +346,5 @@
                         background_color: (1,1,1,0.6)
                         on_release:
                             root.manager.transition.direction = "right"
-                            # TODO
+                            app.save_preferences()
                             root.manager.current = root.manager.previous()

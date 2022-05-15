@@ -10,8 +10,8 @@ class SearchScreen(Screen):
         super().__init__(**kw)
         self.app = App.get_running_app()
 
-    def load_city(self):
-        Thread(target=self._load_weather).start()
+    def load_city(self, city_name=None):
+        Thread(target=self._load_weather, args=(city_name,)).start()
         self.app.screen_manager.transition = SlideTransition(direction="left")
         self.app.screen_manager.current = "loading"
 
@@ -19,8 +19,9 @@ class SearchScreen(Screen):
         self.app.screen_manager.transition = SlideTransition(direction="left")
         self.app.screen_manager.current = "status"
 
-    def _load_weather(self):
-        city_name = self.ids.city_input.text
+    def _load_weather(self, city_name):
+        if not city_name:
+            city_name = self.ids.city_input.text
         self.app.status_screen.set_weather(city_name)
         self.app.status_screen.update_weather()
         Clock.schedule_once(self._set_screen_status)
