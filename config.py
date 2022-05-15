@@ -2,10 +2,10 @@ from logging import DEBUG, INFO, WARNING, ERROR, CRITICAL
 
 
 class Config:
-    OPEN_WEATHER_API_KEY = ""
-    ACCUWEATHER_API_KEY = ""
+    OPEN_WEATHER_API_KEY = "fdc4b4e12d2b09ba6e3efaf5f08669c3"
+    ACCUWEATHER_API_KEY = "6aLfMwtYXqyhy5g1fGFbG1TmoX2XuNAi"
 
-    BG_COLOR_PRIMARY = "#bbb3d1", "#7b89cc",
+    BG_COLOR_PRIMARY = "", "",
     FG_COLOR_PRIMARY = "#FFFFFF",
 
     SUNSET_COLOR = "#e3a072", "#dd8078"
@@ -24,3 +24,5 @@ class Config:
     LOGGER_FORMAT = "%(asctime)s\t%(levelname)-7s\t%(name)-6s\t%(message)s"
     LOGGING_LEVEL = ERROR
     LOGGING_FILE = "weather.log"
+
+    PREFERENCES_FILE = "preferences.json"
