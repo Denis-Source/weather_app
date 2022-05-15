@@ -25,7 +25,7 @@
                 size: 40, 40
                 on_release:
                     root.manager.transition = FallOutTransition()
-                    root.manager.current = "search"
+                    root.manager.current = app.last_screen
                 Image:
                     source: "images/navigation/back.png"
                     size_hint: None, None
@@ -347,3 +347,4 @@
                         on_release:
                             root.manager.transition.direction = "right"
                             app.save_preferences()
+                            root.manager.current = app.last_screen

@@ -24,6 +24,7 @@
                     size_hint: None, None
                     size: 40, 40
                     on_release:
+                        app.last_screen = root.manager.current
                         root.manager.transition = RiseInTransition()
                         root.manager.current = "configuration"
 

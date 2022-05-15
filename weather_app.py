@@ -61,6 +61,7 @@ class WeatherApp(App):
     selected_sun_handler = ObjectProperty()
 
     screen_manager = ObjectProperty()
+    last_screen = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -100,6 +101,8 @@ class WeatherApp(App):
         self.selected_city_handler = None
         self.selected_sun_handler = None
 
+        self.last_screen = None
+
     def build(self):
         kv_path = "layouts/"
         for kv in listdir(kv_path):
@@ -134,26 +137,28 @@ class WeatherApp(App):
         return self.screen_manager
 
     def _key_handler(self, instance, key, *args):
-        if key in (8, 27):
-            if not self.configuration_screen.ids.auto_city_input.focus:
-                self.set_previous_screen()
-                return True
-        elif key == 9:
-            if self.screen_manager.current == "search":
-                self.search_screen.ids.city_input.focus = True
-        elif key == 13:
-            if self.screen_manager.current == "search":
-                self.search_screen.load_city()
+        if not self.screen_manager.current == "loading":
+            if key in (8, 27):
+                if not self.configuration_screen.ids.auto_city_input.focus:
+                    self.set_previous_screen()
+                    return True
+            elif key == 9:
+                if self.screen_manager.current == "search":
+                    self.search_screen.ids.city_input.focus = True
+            elif key == 13:
+                if self.screen_manager.current == "search":
+                    self.search_screen.load_city()
 
     def set_previous_screen(self):
         if self.screen_manager.current == "configuration":
             self.screen_manager.transition = FallOutTransition()
-            self.screen_manager.current = "search"
+            self.screen_manager.current = self.last_screen
         elif self.screen_manager.current == "status":
             self.screen_manager.transition = SlideTransition(direction="right")
             self.screen_manager.current = "search"
 
     def open_settings(self, *args):
+        self.last_screen = self.screen_manager.current
         self.screen_manager.transition = RiseInTransition()
         self.screen_manager.current = "configuration"
 
@@ -244,10 +249,12 @@ class WeatherApp(App):
         if self.preferred_city_to_load:
             self.screen_manager.transition = NoTransition()
             self.screen_manager.current = "loading"
+            self.last_screen = self.screen_manager.current
             self.search_screen.load_city(self.preferred_city)
         else:
             self.screen_manager.transition = NoTransition()
             self.screen_manager.current = "search"
+            self.last_screen = self.screen_manager.current
 
 
 if __name__ == '__main__':
