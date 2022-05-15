@@ -1,9 +1,9 @@
 {
-  "time_format": 24,
-  "temp_format": "C",
+  "time_format": 12,
+  "temp_format": "F",
   "city_api": "OpenWeather",
   "weather_api": "OpenWeather",
   "sun_api": "OpenWeather",
-  "preferred_city_to_load": false,
-  "preferred_city": ""
+  "preferred_city_to_load": true,
+  "preferred_city": "Texas"
 }
