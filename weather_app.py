@@ -138,10 +138,10 @@ class WeatherApp(App):
             if not self.configuration_screen.ids.auto_city_input.focus:
                 self.set_previous_screen()
                 return True
-        elif key is 9:
+        elif key == 9:
             if self.screen_manager.current == "search":
                 self.search_screen.ids.city_input.focus = True
-        elif key is 13:
+        elif key == 13:
             if self.screen_manager.current == "search":
                 self.search_screen.load_city()
 
