@@ -6,7 +6,6 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import ScreenManager, FallOutTransition, SlideTransition, RiseInTransition, NoTransition
 from kivy.config import Config
-from config import Config as AppConfig
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.clock import Clock
