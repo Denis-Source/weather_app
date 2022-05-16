@@ -41,7 +41,7 @@ The main design feature of the application is the ability to change the appearan
 ![image](https://user-images.githubusercontent.com/58669569/168685527-7fca3e9b-e21a-4850-afa9-d967fcc6f622.png)
 #### Night at Kyiv:
 ![image](https://user-images.githubusercontent.com/58669569/168685582-aef8989b-6a32-4d87-a0e9-87065a11564c.png)
-Sunrise at Hong Kong:
+#### Sunrise at Hong Kong:
 ![image](https://user-images.githubusercontent.com/58669569/168686351-eedf997f-71a7-4ca6-a30d-333315b081dc.png)
 
 
