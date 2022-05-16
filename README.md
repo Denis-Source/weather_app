@@ -33,13 +33,13 @@ The list of API handlers parse and decode the information to a standart format c
 - other information witch is stored but not used (wind, humidity, etc).
 
 The main design feature of the application is the ability to change the appearance depending on weather condition and time of the day.
-Cloudy weather in New York at 5 evening will have the next theme:
+#### Cloudy weather in New York at 5 evening will have the next theme:
 ![image](https://user-images.githubusercontent.com/58669569/168685346-d44e7628-0809-4026-8cb5-9174e393fb0a.png)
-Clear weather in LA at 2:
+#### Clear weather in LA at 2:
 ![image](https://user-images.githubusercontent.com/58669569/168685412-ca103e04-8647-4dd8-9aae-e1dc7cded1bb.png)
-Cloudy weather in Lisbon at dusk:
+#### Cloudy weather in Lisbon at dusk:
 ![image](https://user-images.githubusercontent.com/58669569/168685527-7fca3e9b-e21a-4850-afa9-d967fcc6f622.png)
-Night at Kyiv:
+#### Night at Kyiv:
 ![image](https://user-images.githubusercontent.com/58669569/168685582-aef8989b-6a32-4d87-a0e9-87065a11564c.png)
 Sunrise at Hong Kong:
 ![image](https://user-images.githubusercontent.com/58669569/168686351-eedf997f-71a7-4ca6-a30d-333315b081dc.png)
