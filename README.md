@@ -8,8 +8,9 @@ Simple and elegant weather application
 - simple yet effective location search
 - location autosetting
 - written in [kivy](https://github.com/Denis-Source/weather_app) and [tkinter](https://github.com/Denis-Source/weather_app/tree/tkinter) GUI frameworks
+***
 
-## >>>
+## Showcase
 ### Search screen
 By default, the app will ask a location to get weather about.
 The location can be entered in any language supported by the APIs.
@@ -43,7 +44,5 @@ The main design feature of the application is the ability to change the appearan
 ![image](https://user-images.githubusercontent.com/58669569/168685582-aef8989b-6a32-4d87-a0e9-87065a11564c.png)
 #### Sunrise in Hong Kong:
 ![image](https://user-images.githubusercontent.com/58669569/168686351-eedf997f-71a7-4ca6-a30d-333315b081dc.png)
-
-
-
+***
 
