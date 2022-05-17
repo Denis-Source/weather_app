@@ -2,12 +2,12 @@
 Simple and elegant weather application
 
 ## Features
-- adaptable color scheme to time of the day and weather conditions
-- ability to select weather api
-- selectable temperature units and time formats
-- simple yet effective location search
-- location autosetting
-- written in [kivy](https://github.com/Denis-Source/weather_app) and [tkinter](https://github.com/Denis-Source/weather_app/tree/tkinter) GUI frameworks
+- adaptable color scheme to time of the day and weather conditions;
+- ability to select weather api;
+- selectable temperature units and time formats;
+- simple yet effective location search;
+- location autosetting;
+- written in [kivy](https://github.com/Denis-Source/weather_app) and [tkinter](https://github.com/Denis-Source/weather_app/tree/tkinter) GUI frameworks.
 ***
 
 ## Installation
@@ -53,15 +53,15 @@ When the location was entered, the application makes several calls to the APIs:
 - api call to get current weather information;
 - one or several calls to get a forecast for the next 4 or more days.
 
-If the entered city is correct and the API key is correct, APIs should return a valid response.
+If the entered city is correct and the API key is correct, the API should return a valid response.
 
-The list of API handlers parse and decode the information to a standard format, creating a weather object that contains the following information:
+The list of API handlers that parse and decode the information to a standard format, creating a weather object that contains the following information:
 - current temperature;
 - current weather conditions;
 - approximate daily forecast for the next 4 days;
 - other information which is stored but not used (wind, humidity, etc).
 
-The main design feature of the application is the ability to change appearance depending on weather conditions and time of the day.
+The main design feature of the application is the ability to change it's appearance depending on weather conditions and time of the day.
 
 #### Cloudy weather in New York at 5 in the evening will have the next theme:
 ![image](https://user-images.githubusercontent.com/58669569/168685346-d44e7628-0809-4026-8cb5-9174e393fb0a.png)
@@ -76,7 +76,7 @@ The main design feature of the application is the ability to change appearance d
 ***
 
 ## Customization
-The application allows you to change time format, temperature units as well as, called APIs. All this work can be done via configuration screen (menu button or `f1` key).
+The application allows you to change time format, temperature units as well as, called APIs. All this work can be done via the configuration screen (menu button or `f1` key).
 The screen theme is also dynamically changed.
 
 #### Example of the configuration screen:
@@ -98,13 +98,13 @@ The architecture of the app allows dynamic selection of APIs on the fly.
 #### Selection of APIs for weather reports:
 ![image](https://user-images.githubusercontent.com/58669569/168777910-3319f211-c63b-46f5-8a85-99479702802b.png)
 
-As the latest version is considered there are following avalaible APIs:
+As the latest version is considered, there are the following available APIs:
 - [OpenWeather](https://openweathermap.org/api): geolocation, weather and sun information;
 - [AccuWeather](https://developer.accuweather.com/): geolocation and weather;
 - [MetaWeather](https://www.metaweather.com/api/): geolocation and weather;
 - [Sunset and Sunrise](https://sunrise-sunset.org/api): sun information.
 
-Some of them require an API key and allow a limited daily requests amount, others are free.
+Some of them require an API key and allow a limited daily requests amount; others are free.
 
 > Note: Some APIs use woeid and other longitude and latitude, so as a consequence they, are not compatible.
 
