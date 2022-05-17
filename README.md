@@ -32,7 +32,7 @@ pip install -r requirements.txt
 ```
 
 In order to use the app you should have API keys. For testing purposes, you can use MetaWeather and Sunset and Sunrise APIs.
-To run the app. simply start the main file:
+To run the app simply start the main file:
 ```shell
 python weather_app.py
 ```
