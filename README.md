@@ -36,6 +36,7 @@ To run the app. simply start the main file:
 ```shell
 python weather_app.py
 ```
+***
 
 ## Showcase
 ### Search screen
@@ -84,6 +85,7 @@ The screen theme is also dynamically changed.
 There is an option to define the default location.
 #### The default can be set in the form:
 ![image](https://user-images.githubusercontent.com/58669569/168777220-e44c783d-2e57-4cf0-9833-f3fc1878b992.png)
+***
 
 ## APIs
 The application has 3 or 4 different types of APIs:
