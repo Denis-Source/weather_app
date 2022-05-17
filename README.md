@@ -10,6 +10,33 @@ Simple and elegant weather application
 - written in [kivy](https://github.com/Denis-Source/weather_app) and [tkinter](https://github.com/Denis-Source/weather_app/tree/tkinter) GUI frameworks
 ***
 
+## Installation
+Weather app uses kivy as a frontend framework and can be installed on both mobile and desktop platforms.
+Installation process:
+```shell
+git clone https://github.com/Denis-Source/weather_app
+cd weather_app
+```
+It is recommended to use venv
+Windows:
+```shell
+python -m venv venv
+venv\Scripts\Activate.ps1
+pip install - requirements.txt
+```
+Linux/MacOS:
+```shell
+python3 -m venv venv
+source venv/bin/activate
+pip install - requirements.txt
+```
+
+In oreder to use the app you should have API keys. For testing purposes you can use MetaWeather and Sunset and Sunrise APIs.
+To run app simply start main file:
+```shell
+python weather_app.py
+```
+
 ## Showcase
 ### Search screen
 By default, the app will ask a location to get weather about.
@@ -34,6 +61,7 @@ The list of API handlers parse and decode the information to a standard format, 
 - other information whitch is stored but not used (wind, humidity, etc).
 
 The main design feature of the application is the ability to change the appearance depending on weather conditions and time of the day.
+
 #### Cloudy weather in New York at 5 in the evening will have the next theme:
 ![image](https://user-images.githubusercontent.com/58669569/168685346-d44e7628-0809-4026-8cb5-9174e393fb0a.png)
 #### Clear weather in LA at 2:
@@ -45,4 +73,36 @@ The main design feature of the application is the ability to change the appearan
 #### Sunrise in Hong Kong:
 ![image](https://user-images.githubusercontent.com/58669569/168686351-eedf997f-71a7-4ca6-a30d-333315b081dc.png)
 ***
+
+## Customization
+Application allows you to change time format, temprature units as well as called APIs. All this work can be done via configuration screen (menu button or `f1` key).
+The screen theme is also dynamicly changes.
+
+#### Examle of the configuration screen:
+![image](https://user-images.githubusercontent.com/58669569/168776566-33ff656d-85dc-4981-84d3-360d77940c46.png)
+
+There is an option to define the default location.
+#### The default can be set in the form:
+![image](https://user-images.githubusercontent.com/58669569/168777220-e44c783d-2e57-4cf0-9833-f3fc1878b992.png)
+
+## APIs
+The application has 3 or 4 different types of APIs:
+- geolocation;
+- sunrise and sunset information about the location;
+- current weather information;
+- avarage forecast for the following 4 or more days.
+
+The architecture of the app allows dynamic selection of APIs on the fly.
+#### Selection of APIs for weather report:
+![image](https://user-images.githubusercontent.com/58669569/168777910-3319f211-c63b-46f5-8a85-99479702802b.png)
+
+As the latest version is considered there are following avalaible APIs:
+- [OpenWeather](https://openweathermap.org/api): geolocation, weather and sun information;
+- [AccuWeather](https://developer.accuweather.com/): geolocation and weather;
+- [MetaWearger](https://www.metaweather.com/api/): geolocation and weather;
+- [Sunset and Sunrise](https://sunrise-sunset.org/api): sun information.
+
+Some of them require API key and allow a limited daily requests amount, other are free.
+
+> Note: Some API use woeid and other longitude and latitude so as a consequence they are not compatible.
 
