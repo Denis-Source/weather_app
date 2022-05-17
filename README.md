@@ -31,8 +31,8 @@ source venv/bin/activate
 pip install - requirements.txt
 ```
 
-In oreder to use the app you should have API keys. For testing purposes you can use MetaWeather and Sunset and Sunrise APIs.
-To run app simply start main file:
+In order to use the app you should have API keys. For testing purposes, you can use MetaWeather and Sunset and Sunrise APIs.
+To run the app. simply start the main file:
 ```shell
 python weather_app.py
 ```
@@ -46,21 +46,21 @@ The search screen can be omitted if the default location setting is set.
 Location is determined by the API and it has a comprehensive list of cities and locations all around the world.
 
 ### Status screen
-When the location was entered the application make several calls to the APIs:
-- depending on the selected API gets whether the coordinates or the [woeid](https://en.wikipedia.org/wiki/WOEID) of the specified location;
+When the location was entered, the application makes several calls to the APIs:
+- depending on whether the selected API gets the coordinates or the [woeid](https://en.wikipedia.org/wiki/WOEID) of the specified location;
 - gets information about sun rise or set timings (needed to determine time of the day of the location);
 - api call to get current weather information;
 - one or several calls to get a forecast for the next 4 or more days.
 
-If the entered city is correct and API key is correct, APIs should return a valid response.
+If the entered city is correct and the API key is correct, APIs should return a valid response.
 
 The list of API handlers parse and decode the information to a standard format, creating a weather object that contains the following information:
 - current temperature;
 - current weather conditions;
 - approximate daily forecast for the next 4 days;
-- other information whitch is stored but not used (wind, humidity, etc).
+- other information which is stored but not used (wind, humidity, etc).
 
-The main design feature of the application is the ability to change the appearance depending on weather conditions and time of the day.
+The main design feature of the application is the ability to change appearance depending on weather conditions and time of the day.
 
 #### Cloudy weather in New York at 5 in the evening will have the next theme:
 ![image](https://user-images.githubusercontent.com/58669569/168685346-d44e7628-0809-4026-8cb5-9174e393fb0a.png)
@@ -75,10 +75,10 @@ The main design feature of the application is the ability to change the appearan
 ***
 
 ## Customization
-Application allows you to change time format, temprature units as well as called APIs. All this work can be done via configuration screen (menu button or `f1` key).
-The screen theme is also dynamicly changes.
+The application allows you to change time format, temperature units as well as, called APIs. All this work can be done via configuration screen (menu button or `f1` key).
+The screen theme is also dynamically changed.
 
-#### Examle of the configuration screen:
+#### Example of the configuration screen:
 ![image](https://user-images.githubusercontent.com/58669569/168776566-33ff656d-85dc-4981-84d3-360d77940c46.png)
 
 There is an option to define the default location.
@@ -90,10 +90,10 @@ The application has 3 or 4 different types of APIs:
 - geolocation;
 - sunrise and sunset information about the location;
 - current weather information;
-- avarage forecast for the following 4 or more days.
+- average forecast for the following 4 or more days.
 
 The architecture of the app allows dynamic selection of APIs on the fly.
-#### Selection of APIs for weather report:
+#### Selection of APIs for weather reports:
 ![image](https://user-images.githubusercontent.com/58669569/168777910-3319f211-c63b-46f5-8a85-99479702802b.png)
 
 As the latest version is considered there are following avalaible APIs:
@@ -102,7 +102,7 @@ As the latest version is considered there are following avalaible APIs:
 - [MetaWearger](https://www.metaweather.com/api/): geolocation and weather;
 - [Sunset and Sunrise](https://sunrise-sunset.org/api): sun information.
 
-Some of them require API key and allow a limited daily requests amount, other are free.
+Some of them require an API key and allow a limited daily requests amount, others are free.
 
-> Note: Some API use woeid and other longitude and latitude so as a consequence they are not compatible.
+> Note: Some APIs use woeid and other longitude and latitude, so as a consequence they, are not compatible.
 
