@@ -156,6 +156,7 @@ class WeatherApp(App):
         elif self.screen_manager.current == "status":
             self.screen_manager.transition = SlideTransition(direction="right")
             self.screen_manager.current = "search"
+            self.last_screen = "search"
 
     def open_settings(self, *args):
         self.last_screen = self.screen_manager.current

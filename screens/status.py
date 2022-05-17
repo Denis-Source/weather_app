@@ -65,7 +65,7 @@ class StatusScreen(Screen):
         try:
             self.set_weather(self.city.name)
             if len(self.city.name) > 13:
-                self.ids.city_name.text = f"{self.city.name[:11]}..."
+                self.ids.city_name.text = f"{self.city.name[:10]}..."
             else:
                 self.ids.city_name.text = self.city.name
 
