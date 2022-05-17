@@ -1,5 +1,5 @@
 # weather_app
-Simple and elegant weather application
+Simple yet elegant weather application
 
 ## Features
 - adaptable color scheme to time of the day and weather conditions;
