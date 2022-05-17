@@ -101,7 +101,7 @@ The architecture of the app allows dynamic selection of APIs on the fly.
 As the latest version is considered there are following avalaible APIs:
 - [OpenWeather](https://openweathermap.org/api): geolocation, weather and sun information;
 - [AccuWeather](https://developer.accuweather.com/): geolocation and weather;
-- [MetaWearger](https://www.metaweather.com/api/): geolocation and weather;
+- [MetaWeather](https://www.metaweather.com/api/): geolocation and weather;
 - [Sunset and Sunrise](https://sunrise-sunset.org/api): sun information.
 
 Some of them require an API key and allow a limited daily requests amount, others are free.
