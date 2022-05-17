@@ -106,5 +106,5 @@ As the latest version is considered, there are the following available APIs:
 
 Some of them require an API key and allow a limited daily requests amount; others are free.
 
-> Note: Some APIs use woeid and other longitude and latitude, so as a consequence they, are not compatible.
+> Note: Some APIs use [woeid](https://en.wikipedia.org/wiki/WOEID) and other longitude and latitude, so as a consequence they, are not compatible.
 
