@@ -44,6 +44,7 @@ By default, the app will ask a location to get weather about.
 The location can be entered in any language supported by the APIs.
 The search screen can be omitted if the default location setting is set.
 ![image](https://user-images.githubusercontent.com/58669569/168682884-937346e5-e269-4dbb-8cff-fcfff3f02416.png)
+
 Location is determined by the API and it has a comprehensive list of cities and locations all around the world.
 
 ### Status screen
