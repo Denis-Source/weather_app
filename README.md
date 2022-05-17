@@ -22,13 +22,13 @@ Windows:
 ```shell
 python -m venv venv
 venv\Scripts\Activate.ps1
-pip install - requirements.txt
+pip install -r requirements.txt
 ```
 Linux/MacOS:
 ```shell
 python3 -m venv venv
 source venv/bin/activate
-pip install - requirements.txt
+pip install -r requirements.txt
 ```
 
 In order to use the app you should have API keys. For testing purposes, you can use MetaWeather and Sunset and Sunrise APIs.
