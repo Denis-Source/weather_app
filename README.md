@@ -60,9 +60,9 @@ The list of API handlers that parse and decode the information to a standard for
 - current temperature;
 - current weather conditions;
 - approximate daily forecast for the next 4 days;
-- other information which is stored but not used (wind, humidity, etc).
+- other information is stored but not used (wind, humidity, etc).
 
-The main design feature of the application is the ability to change it's appearance depending on weather conditions and time of the day.
+The main design feature of the application is the ability to change its appearance depending on weather conditions and time of the day.
 
 #### Cloudy weather in New York at 5 in the evening will have the next theme:
 ![image](https://user-images.githubusercontent.com/58669569/168685346-d44e7628-0809-4026-8cb5-9174e393fb0a.png)
@@ -77,7 +77,7 @@ The main design feature of the application is the ability to change it's appeara
 ***
 
 ## Customization
-The application allows you to change time format, temperature units as well as, called APIs. All this work can be done via the configuration screen (menu button or `f1` key).
+The application allows you to change time format, temperature units as well as APIs you call. All this work can be done via the configuration screen (menu button or `f1` key).
 The screen theme is also dynamically changed.
 
 #### Example of the configuration screen:
