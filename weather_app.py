@@ -164,9 +164,10 @@ class WeatherApp(App):
             self.last_screen = "search"
 
     def open_settings(self, *args: list):
-        self.last_screen = self.screen_manager.current
-        self.screen_manager.transition = RiseInTransition()
-        self.screen_manager.current = "configuration"
+        if self.screen_manager.current != "configuration":
+            self.last_screen = self.screen_manager.current
+            self.screen_manager.transition = RiseInTransition()
+            self.screen_manager.current = "configuration"
 
     def get_first_screen(self):
         if self.preferred_city_to_load:

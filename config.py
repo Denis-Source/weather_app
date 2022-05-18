@@ -2,8 +2,8 @@ from logging import DEBUG, INFO, WARNING, ERROR, CRITICAL
 
 
 class Config:
-    OPEN_WEATHER_API_KEY = "fdc4b4e12d2b09ba6e3efaf5f08669c3"
-    ACCUWEATHER_API_KEY = "6aLfMwtYXqyhy5g1fGFbG1TmoX2XuNAi"
+    OPEN_WEATHER_API_KEY = ""
+    ACCUWEATHER_API_KEY = ""
 
     BG_COLOR_PRIMARY = "#bbb3d1", "#7b89cc",
     FG_COLOR_PRIMARY = "#FFFFFF",
