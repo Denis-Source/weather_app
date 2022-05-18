@@ -5,7 +5,7 @@ import requests
 from handlers.sun_handlers.base_sun_handler import BaseSunsetHandler
 
 from handlers.sun_info import SunInfo
-from handlers.errors import NoAPIConnectionException, BadCityNameException
+from handlers.errors import NoAPIConnectionException, BadCityNameException, ServiceUnavailableException
 
 
 class SunriseSunsetSunHandler(BaseSunsetHandler):
@@ -36,12 +36,15 @@ class SunriseSunsetSunHandler(BaseSunsetHandler):
         try:
             self.logger.debug(f"Getting sun info from {self.API_NAME}")
             response = requests.get(self.get_url())
+            if response.status_code >= 400:
+                raise ServiceUnavailableException(self.API_NAME)
+
             sun_data = response.json()
 
             sunrise = datetime.datetime.fromisoformat(sun_data["results"]["sunrise"])
             sunset = datetime.datetime.fromisoformat(sun_data["results"]["sunset"])
             return SunInfo(sunrise.timestamp(), sunset.timestamp())
+        except (KeyError, IndexError):
+            raise BadCityNameException(self.city.name)
         except (requests.ConnectionError, requests.Timeout):
             raise NoAPIConnectionException(self.API_NAME, "sun info")
-        except KeyError:
-            raise BadCityNameException(self.city.name)

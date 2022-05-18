@@ -4,12 +4,22 @@ import datetime
 
 from handlers.weather_handlers.base_weather_handler import BaseWeatherHandler
 from handlers.weather import Weather
-from handlers.errors import NoAPIConnectionException, BadWeatherException, NotCompatibleAPIException
-
-from config import Config
+from handlers.errors import NoAPIConnectionException, BadWeatherException, NotCompatibleAPIException, \
+    ServiceUnavailableException
 
 
 class MetaWeatherHandler(BaseWeatherHandler):
+    """
+    MetaWeather handler class
+    Does not requires API key
+    url: https://www.metaweather.com/api/
+    Attributes:
+        city           city object instance
+    Constants:
+        API_NAME       short API name
+        STATUS_TABLE   Weather object and API weather status mapping
+    """
+
     STATUS_TABLE = {
         "Snow": Weather.SNOW,
         "Sleet": Weather.SNOW,
@@ -29,7 +39,13 @@ class MetaWeatherHandler(BaseWeatherHandler):
         super().__init__(city)
         self.logger = logging.getLogger("mw_wthr")
 
-    def ping(self):
+    def ping(self) -> bool:
+        """
+        MetaWeather API connection test
+        Tries the connection for one second
+
+        :return: whether the call was successful
+        """
         try:
             self.logger.debug(f"Trying to ping {self.API_NAME}")
             timeout = 1
@@ -40,7 +56,17 @@ class MetaWeatherHandler(BaseWeatherHandler):
             self.logger.warning(f"Cant ping {self.API_NAME} city")
             return False
 
-    def get_url_current(self):
+    def get_url_current(self) -> str:
+        """
+        Gets MetaWeather API url to get the current weather
+        To have a successful call, AccuWeather API requires city woeid
+        if not provided in the City object raises the corresponding message
+
+        :returns: URL that can be visited to get a forecast
+        :raises:
+            NotCompatibleAPIException   if the api is not compatible with the city object
+        """
+
         if self.city.woeid:
             url = f"https://www.metaweather.com/api/location/" \
                   f"{self.city.woeid}/"
@@ -51,12 +77,37 @@ class MetaWeatherHandler(BaseWeatherHandler):
             raise NotCompatibleAPIException(self.API_NAME)
 
     def get_url_forecast(self):
+        """
+        Gets OpenWeather API url to get a forecast
+        To have a successful call, AccuWeather API requires city woeid
+        if not provided in the City object, raises the corresponding message
+        The url for the current weather and a forecast is the same
+
+        :returns: URL that can be visited to get a forecast
+        :raises:
+            NotCompatibleAPIException   if the api is not compatible with the city object
+        """
+
         self.logger.debug("Creating forecast url (calling current url)")
         return self.get_url_current()
 
     def get_weather_current(self):
+        """
+        Gets the current weather from the AccuWeather API
+
+        :returns: Weather object object with the corresponding information
+
+        :raises:
+            BadWeatherException             API response is not parsable
+            NoAPIConnectionException        API is not accessible
+            ServiceUnavailableException     API returned bad a response
+        """
+
         try:
             response = requests.get(self.get_url_current())
+            if response.status_code >= 400:
+                raise ServiceUnavailableException(self.API_NAME)
+
             self.logger.info(f"Got current weather request from {self.API_NAME}")
             weather_dict = response.json()
 
@@ -64,7 +115,7 @@ class MetaWeatherHandler(BaseWeatherHandler):
             time_zone = date.utcoffset() / datetime.timedelta(seconds=1)
 
             return Weather(
-                city_name=self.city.name,
+                location_name=self.city.name,
                 status=self.STATUS_TABLE[weather_dict["consolidated_weather"][0]["weather_state_name"]],
                 temperature=weather_dict["consolidated_weather"][0]["the_temp"],
                 pressure=weather_dict["consolidated_weather"][0]["air_pressure"],
@@ -82,8 +133,27 @@ class MetaWeatherHandler(BaseWeatherHandler):
             raise NoAPIConnectionException(self.API_NAME, "current weather")
 
     def get_weather_forecast(self, n):
+        """
+        Gets a forecast from the MetaWeather API
+
+        :param n:   number of predicted days
+
+        :returns:   Weather object list with the corresponding information
+
+        :raises:
+            BadWeatherException             API response is not parsable
+            NoAPIConnectionException        API is not accessible
+            ServiceUnavailableException     API returned a bad response
+        """
+
         try:
             response = requests.get(self.get_url_forecast())
+            if response.status_code >= 400:
+                raise ServiceUnavailableException(self.API_NAME)
+
+            if response.status_code >= 400:
+                raise ServiceUnavailableException(self.API_NAME)
+
             self.logger.info(f"Got forecast weather request from {self.API_NAME}")
             results = response.json()
             forecast = []
@@ -95,7 +165,7 @@ class MetaWeatherHandler(BaseWeatherHandler):
                 date = datetime.datetime.fromisoformat(day_info["applicable_date"])
 
                 weather = Weather(
-                    city_name=self.city.name,
+                    location_name=self.city.name,
                     status=self.STATUS_TABLE[day_info["weather_state_name"]],
                     temperature=day_info["the_temp"],
                     pressure=day_info["air_pressure"],
@@ -107,7 +177,7 @@ class MetaWeatherHandler(BaseWeatherHandler):
                 )
                 forecast.append(weather)
             return forecast[1:n + 1]
-        except KeyError:
+        except (KeyError, IndexError):
             self.logger.warning(f"Bad weather response {self.API_NAME}")
             raise BadWeatherException(self.API_NAME)
         except (requests.ConnectionError, requests.Timeout):

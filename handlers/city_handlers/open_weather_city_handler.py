@@ -2,7 +2,8 @@ import requests
 import logging
 
 from handlers.city_handlers.base_city_handler import BaseCityHandler
-from handlers.errors import BadCityNameException, NoAPIConnectionException
+from handlers.errors import BadCityNameException, NoAPIConnectionException, WeatherAppException, \
+    ServiceUnavailableException
 from handlers.city import City
 
 from config import Config
@@ -36,6 +37,10 @@ class OpenWeatherCityHandler(BaseCityHandler):
     def get_city(self):
         try:
             response = requests.get(self.get_url())
+
+            if response.status_code >= 400:
+                raise ServiceUnavailableException(self.API_NAME)
+
             self.logger.info(f"Got current city request from {self.API_NAME}")
             city_dict = response.json()[0]
 

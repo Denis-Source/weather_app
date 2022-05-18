@@ -2,7 +2,8 @@ import requests
 import logging
 
 from handlers.city_handlers.base_city_handler import BaseCityHandler
-from handlers.errors import BadCityNameException, NoAPIConnectionException, ServiceUnavailableException
+from handlers.errors import BadCityNameException, NoAPIConnectionException, ServiceUnavailableException, \
+    WeatherAppException
 from handlers.city import City
 
 from config import Config
@@ -43,6 +44,9 @@ class AccuWeatherCityHandler(BaseCityHandler):
     def get_city(self):
         try:
             response = requests.get(self.get_url())
+            if response.status_code >= 400:
+                raise ServiceUnavailableException(self.API_NAME)
+
             self.logger.info(f"Got current city request from {self.API_NAME}")
             if response.status_code == 503:
                 raise ServiceUnavailableException(self.API_NAME)

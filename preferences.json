@@ -1,9 +1,0 @@
-{
-  "time_format": 24,
-  "temp_format": "C",
-  "city_api": "OpenWeather",
-  "weather_api": "OpenWeather",
-  "sun_api": "OpenWeather",
-  "preferred_city_to_load": false,
-  "preferred_city": ""
-}

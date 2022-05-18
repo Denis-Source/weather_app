@@ -1,7 +1,10 @@
+from typing import List
+
 import requests
 import logging
 import datetime
 
+from handlers.city import City
 from handlers.weather_handlers.base_weather_handler import BaseWeatherHandler
 from handlers.weather import Weather
 from handlers.errors import NoAPIConnectionException, BadWeatherException, NotCompatibleAPIException
@@ -10,6 +13,17 @@ from config import Config
 
 
 class AccuWeatherHandler(BaseWeatherHandler):
+    """
+    AccuWeather handler class
+    Requires API key
+    API key should be set in Config as ACCUWEATHER_API_KEY
+    url: https://openweathermap.org/api
+    Attributes:
+        city           city object instance
+    Constants:
+        API_NAME       short API name
+        STATUS_TABLE   Weather object and API weather status mapping
+    """
     API_NAME = "AccuWeather"
     STATUS_TABLE = {
         1: Weather.CLEAR,
@@ -54,11 +68,18 @@ class AccuWeatherHandler(BaseWeatherHandler):
         44: Weather.SNOW
     }
 
-    def __init__(self, city):
+    def __init__(self, city: City):
         super().__init__(city)
         self.logger = logging.getLogger("aw_wthr")
 
-    def ping(self):
+    def ping(self) -> bool:
+        """
+        AccuWeather API connection test
+        Tries the connection for one second
+
+        :return: whether the call was successful
+        """
+
         try:
             self.logger.debug(f"Trying to ping {self.API_NAME}")
             timeout = 1
@@ -69,7 +90,17 @@ class AccuWeatherHandler(BaseWeatherHandler):
             self.logger.warning(f"Cant ping {self.API_NAME} weather")
             return False
 
-    def get_url_current(self):
+    def get_url_current(self) -> str:
+        """
+        Gets OpenWeather API url to get the current weather
+        To have a successful call, AccuWeather API requires city woeid
+        if not provided in the City object raises the corresponding message
+
+        :returns: URL that can be visited to get a forecast
+        :raises:
+            NotCompatibleAPIException   if the api is not compatible with the city object
+        """
+
         if self.city.woeid:
             url = f"http://dataservice.accuweather.com/forecasts/v1/hourly/1hour/" \
                   f"{self.city.woeid}?apikey={Config.ACCUWEATHER_API_KEY}" \
@@ -80,7 +111,17 @@ class AccuWeatherHandler(BaseWeatherHandler):
             self.logger.warning(f"Not compatible {self.API_NAME}")
             raise NotCompatibleAPIException(self.API_NAME)
 
-    def get_url_forecast(self):
+    def get_url_forecast(self) -> str:
+        """
+        Gets AccuWeather API url to get a forecast
+        To have a successful call, AccuWeather API requires city woeid
+        if not provided in the City object, raises the corresponding message
+
+        :returns: URL that can be visited to get a forecast
+        :raises:
+            NotCompatibleAPIException   if the api is not compatible with the city object
+        """
+
         if self.city.woeid:
             url = f"http://dataservice.accuweather.com/forecasts/v1/daily/5day/" \
                   f"{self.city.woeid}?apikey={Config.ACCUWEATHER_API_KEY}&details=true&metric=true"
@@ -90,7 +131,18 @@ class AccuWeatherHandler(BaseWeatherHandler):
             self.logger.warning(f"Not compatible {self.API_NAME}")
             raise NotCompatibleAPIException(self.API_NAME)
 
-    def get_weather_current(self):
+    def get_weather_current(self) -> Weather:
+        """
+        Gets the current weather from the AccuWeather API
+
+        :returns: Weather object object with the corresponding information
+
+        :raises:
+            BadWeatherException             API response is not parsable
+            NoAPIConnectionException        API is not accessible
+            ServiceUnavailableException     API returned bad a response
+        """
+
         try:
             response = requests.get(self.get_url_current())
             self.logger.info(f"Got current weather request from {self.API_NAME}")
@@ -98,7 +150,7 @@ class AccuWeatherHandler(BaseWeatherHandler):
             date = datetime.datetime.fromisoformat(weather_dict["DateTime"])
             time_zone = date.utcoffset() / datetime.timedelta(seconds=1)
             return Weather(
-                city_name=self.city.name,
+                location_name=self.city.name,
                 status=self.STATUS_TABLE[weather_dict["WeatherIcon"]],
                 temperature=weather_dict["Temperature"]["Value"],
                 pressure=None,
@@ -108,14 +160,26 @@ class AccuWeatherHandler(BaseWeatherHandler):
                 time=weather_dict["EpochDateTime"],
                 time_zone=time_zone
             )
-        except KeyError:
+        except (KeyError, IndexError):
             self.logger.warning(f"Bad weather response {self.API_NAME}")
             raise BadWeatherException(self.API_NAME)
         except (requests.ConnectionError, requests.Timeout):
             self.logger.warning(f"Error connecting {self.API_NAME}")
             raise NoAPIConnectionException(self.API_NAME, "current weather")
 
-    def get_weather_forecast(self, n):
+    def get_weather_forecast(self, n: int) -> List[Weather]:
+        """
+        Gets a forecast from the AccuWeather API
+
+        :param n:   number of predicted days
+
+        :returns:   Weather object list with the corresponding information
+
+        :raises:
+            BadWeatherException             API response is not parsable
+            NoAPIConnectionException        API is not accessible
+            ServiceUnavailableException     API returned bad a response
+        """
         try:
             response = requests.get(self.get_url_forecast())
             self.logger.info(f"Got forecast weather request from {self.API_NAME}")
@@ -125,7 +189,7 @@ class AccuWeatherHandler(BaseWeatherHandler):
                 date = datetime.datetime.fromisoformat(day_info["Date"])
                 time_zone = date.utcoffset() / datetime.timedelta(seconds=1)
                 weather = Weather(
-                    city_name=self.city.name,
+                    location_name=self.city.name,
                     status=self.STATUS_TABLE[day_info["Day"]["Icon"]],
                     temperature=day_info["Temperature"]["Maximum"]["Value"],
                     pressure=None,

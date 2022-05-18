@@ -1,6 +1,7 @@
 class WeatherAppException(Exception):
     def __init__(self, message="Unspecified"):
         super().__init__(message)
+        self.message = message
 
 
 class BadCityNameException(WeatherAppException):
@@ -45,7 +46,7 @@ class NotCompatibleAPIException(WeatherAppException):
 
 
 class ServiceUnavailableException(WeatherAppException):
-    def __init__(self, api_name, message="Service unavailable"):
+    def __init__(self, api_name, message="API unavailable"):
         super().__init__(message)
         self.api_name = api_name
         self.message = message

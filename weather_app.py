@@ -63,7 +63,7 @@ class WeatherApp(App):
     screen_manager = ObjectProperty()
     last_screen = ObjectProperty()
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super().__init__(**kwargs)
         self.status_screen = None
         self.search_screen = None
@@ -131,7 +131,12 @@ class WeatherApp(App):
         Clock.schedule_interval(self.status_screen.update_time, 0.5)
         Window.bind(on_keyboard=self._key_handler)
 
-        self.load_preferences()
+        try:
+            self.configuration_screen.load_preferences()
+        except (FileNotFoundError, KeyError):
+            self.configuration_screen.save_defaults()
+            self.configuration_screen.load_preferences()
+
         self.get_first_screen()
 
         return self.screen_manager
@@ -158,93 +163,10 @@ class WeatherApp(App):
             self.screen_manager.current = "search"
             self.last_screen = "search"
 
-    def open_settings(self, *args):
+    def open_settings(self, *args: list):
         self.last_screen = self.screen_manager.current
         self.screen_manager.transition = RiseInTransition()
         self.screen_manager.current = "configuration"
-
-    def load_preferences(self):
-        with open(AppConfig.PREFERENCES_FILE, "r") as f:
-            preferences = json.load(f)
-
-        self.time_format = preferences["time_format"]
-        if self.time_format == 24:
-            self.configuration_screen.ids.toggle_time_24.state = "down"
-        else:
-            self.configuration_screen.ids.toggle_time_12.state = "down"
-
-        self.temp_format = preferences["temp_format"]
-        if self.temp_format == "C":
-            self.configuration_screen.ids.toggle_temp_cels.state = "down"
-        else:
-            self.configuration_screen.ids.toggle_temp_fahr.state = "down"
-
-        self.configuration_screen.ids.api_geo_selection.values = [api for api in self.city_handlers]
-        self.configuration_screen.ids.api_weather_selection.values = [api for api in self.weather_handlers]
-        self.configuration_screen.ids.api_sun_selection.values = [api for api in self.sun_handlers]
-
-        self.selected_city_handler = preferences["city_api"]
-        self.selected_weather_handler = preferences["weather_api"]
-        self.selected_sun_handler = preferences["sun_api"]
-
-        self.configuration_screen.ids.api_geo_selection.text = self.selected_city_handler
-        self.configuration_screen.ids.api_sun_selection.text = self.selected_sun_handler
-        self.configuration_screen.ids.api_weather_selection.text = self.selected_weather_handler
-
-        self.preferred_city_to_load = preferences["preferred_city_to_load"]
-        self.preferred_city = preferences["preferred_city"]
-
-        if self.preferred_city_to_load:
-            self.configuration_screen.ids.auto_city_on_toggle.state = "down"
-            self.configuration_screen.ids.auto_city_off_toggle.state = "normal"
-            self.configuration_screen.ids.auto_city_input.text = self.preferred_city
-        else:
-            self.configuration_screen.ids.auto_city_off_toggle.state = "down"
-            self.configuration_screen.ids.auto_city_on_toggle.state = "normal"
-            self.configuration_screen.ids.auto_city_input.text = ""
-            self.preferred_city = ""
-
-        self.city_handler_class = self.city_handlers[self.selected_city_handler]
-        self.sun_handler_class = self.sun_handlers[self.selected_sun_handler]
-        self.weather_handler_class = self.weather_handlers[self.selected_weather_handler]
-
-    def save_preferences(self):
-        if self.configuration_screen.ids.toggle_time_24.state == "down":
-            self.time_format = 24
-        else:
-            self.time_format = 12
-
-        if self.configuration_screen.ids.toggle_temp_cels.state == "down":
-            self.temp_format = "C"
-        else:
-            self.temp_format = "F"
-
-        self.selected_city_handler = self.configuration_screen.ids.api_geo_selection.text
-        self.selected_sun_handler = self.configuration_screen.ids.api_sun_selection.text
-        self.selected_weather_handler = self.configuration_screen.ids.api_weather_selection.text
-
-        if self.configuration_screen.ids.auto_city_on_toggle.state == "down" \
-                and self.configuration_screen.ids.auto_city_input.text:
-            self.preferred_city_to_load = True
-            self.preferred_city = self.configuration_screen.ids.auto_city_input.text
-        else:
-            self.preferred_city_to_load = False
-            self.preferred_city = ""
-
-        preferences = {
-            "time_format": self.time_format,
-            "temp_format": self.temp_format,
-            "city_api": self.selected_city_handler,
-            "weather_api": self.selected_weather_handler,
-            "sun_api": self.selected_sun_handler,
-            "preferred_city_to_load": self.preferred_city_to_load,
-            "preferred_city": self.preferred_city
-        }
-
-        with open(AppConfig.PREFERENCES_FILE, "w") as f:
-            json.dump(preferences, f, indent=2)
-
-        self.load_preferences()
 
     def get_first_screen(self):
         if self.preferred_city_to_load:
