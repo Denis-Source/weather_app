@@ -3,7 +3,7 @@ Simple yet elegant weather application
 
 ## Features
 - adaptable color scheme to time of the day and weather conditions;
-- ability to select weather api;
+- ability to select a weather api;
 - selectable temperature units and time formats;
 - simple yet effective location search;
 - location autosetting;
@@ -42,19 +42,19 @@ python weather_app.py
 ### Search screen
 By default, the app will ask a location to get weather about.
 The location can be entered in any language supported by the APIs.
-The search screen will be omitted if the default location setting is set.
+The search screen can be omitted if the default location setting is set.
 ![image](https://user-images.githubusercontent.com/58669569/168682884-937346e5-e269-4dbb-8cff-fcfff3f02416.png)
 
 Location is determined by the API and it has a comprehensive list of cities and locations all around the world.
 
 ### Status screen
-When the location was entered, the application makes several calls to the APIs:
+When the location is entered, the application makes several calls to the APIs:
 - depending on whether the selected API gets the coordinates or the [woeid](https://en.wikipedia.org/wiki/WOEID) of the specified location;
 - gets information about sun rise or set timings (needed to determine time of the day of the location);
 - api call to get current weather information;
 - one or several calls to get a forecast for the next 4 or more days.
 
-If the entered city is correct and the API key is correct, the API should return a valid response.
+If the entered city is correct and the API key is correct, the API returns a valid response.
 
 The list of API handlers that parse and decode the information to a standard format, creating a weather object that contains the following information:
 - current temperature;
