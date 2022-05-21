@@ -8,8 +8,33 @@ from config import Config
 
 
 class ConfigurationScreen(Screen):
+    """
+    Configuration Screen is used to setup preferences of the application
+    Uses preferences.json file
+    Has the following settings:
+        Time format (24 or 12 hours);
+        Temperature units (Celsius or Fahrenheit
+        Weather handler class
+        City handler class
+        Sun handler class
+        Auto location setting
+        Preferred city (when auto location setting is on)
+    Overrides the kivy screen object
 
-    def load_preferences(self):
+    Methods:
+        load_preferences
+        save_preferences
+        save_defaults
+    """
+
+    def load_preferences(self) -> None:
+        """
+        Loads settings from the preferences.json file
+        Sets root application object accordingly
+        Sets buttons and entries
+        Loads all the settings listed above in one go
+        :return: None
+        """
         app = App.get_running_app()
 
         with open(Config.PREFERENCES_FILE, "r") as f:
@@ -56,7 +81,14 @@ class ConfigurationScreen(Screen):
         app.sun_handler_class = app.sun_handlers[app.selected_sun_handler]
         app.weather_handler_class = app.weather_handlers[app.selected_weather_handler]
 
-    def save_preferences(self):
+    def save_preferences(self) -> None:
+        """
+        Saves settings from the configuration screen to the preferences.json file
+        gets the information from the buttons and entries
+        Saves all the settings listed above in one go
+        After saving loads the settings repeatedly to ensure synchronicity
+        :return: None
+        """
         app = App.get_running_app()
 
         if self.ids.toggle_time_24.state == "down":
@@ -96,7 +128,11 @@ class ConfigurationScreen(Screen):
 
         self.load_preferences()
 
-    def save_defaults(self):
+    def save_defaults(self) -> None:
+        """
+        Saves the default configuration in the preferences.json file
+        :return:
+        """
         defaults = {
             "time_format": 24,
             "temp_format": "C",
@@ -111,10 +147,12 @@ class ConfigurationScreen(Screen):
 
 
 class APIOption(SpinnerOption):
+    """API Spinner option class"""
     pass
 
 
 class APISpinner(Spinner):
+    """API Spinner class with the defined option class"""
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.option_cls = APIOption

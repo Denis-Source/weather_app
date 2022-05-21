@@ -17,9 +17,10 @@ class AccuWeatherHandler(BaseWeatherHandler):
     AccuWeather handler class
     Requires API key
     API key should be set in Config as ACCUWEATHER_API_KEY
-    url: https://openweathermap.org/api
+    url: https://developer.accuweather.com/
     Attributes:
         city           city object instance
+        logger
     Constants:
         API_NAME       short API name
         STATUS_TABLE   Weather object and API weather status mapping
@@ -75,7 +76,7 @@ class AccuWeatherHandler(BaseWeatherHandler):
     def ping(self) -> bool:
         """
         AccuWeather API connection test
-        Tries the connection for one second
+        Tries to connect to the API for one second
 
         :return: whether the call was successful
         """
@@ -96,7 +97,7 @@ class AccuWeatherHandler(BaseWeatherHandler):
         To have a successful call, AccuWeather API requires city woeid
         if not provided in the City object raises the corresponding message
 
-        :returns: URL that can be visited to get a forecast
+        :return: URL that can be visited to get a forecast
         :raises:
             NotCompatibleAPIException   if the api is not compatible with the city object
         """
@@ -117,7 +118,7 @@ class AccuWeatherHandler(BaseWeatherHandler):
         To have a successful call, AccuWeather API requires city woeid
         if not provided in the City object, raises the corresponding message
 
-        :returns: URL that can be visited to get a forecast
+        :return: URL that can be visited to get a forecast
         :raises:
             NotCompatibleAPIException   if the api is not compatible with the city object
         """
@@ -135,7 +136,7 @@ class AccuWeatherHandler(BaseWeatherHandler):
         """
         Gets the current weather from the AccuWeather API
 
-        :returns: Weather object object with the corresponding information
+        :return: Weather object object with the corresponding information
 
         :raises:
             BadWeatherException             API response is not parsable
@@ -173,7 +174,7 @@ class AccuWeatherHandler(BaseWeatherHandler):
 
         :param n:   number of predicted days
 
-        :returns:   Weather object list with the corresponding information
+        :return:   Weather object list with the corresponding information
 
         :raises:
             BadWeatherException             API response is not parsable

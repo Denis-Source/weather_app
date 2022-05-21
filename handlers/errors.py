@@ -1,11 +1,27 @@
 class WeatherAppException(Exception):
-    def __init__(self, message="Unspecified"):
+    """
+    General Exception with a default message
+
+    Attributes:
+        message
+    """
+
+    def __init__(self, message: str = "Unspecified"):
         super().__init__(message)
         self.message = message
 
 
 class BadCityNameException(WeatherAppException):
-    def __init__(self, city_name, message="Bad city name"):
+    """
+    Bad name or unknown location Exception
+    Inherits WeatherAppException
+
+    Attributes:
+        city_name
+        message
+    """
+
+    def __init__(self, city_name: str, message: str = "Bad city name"):
         super().__init__(message)
         self.city_name = city_name
         self.message = message
@@ -15,7 +31,17 @@ class BadCityNameException(WeatherAppException):
 
 
 class NoAPIConnectionException(WeatherAppException):
-    def __init__(self, api_name, action, message="No connection"):
+    """
+    Raised when the API is not reachable
+    Inherits WeatherAppException
+
+    Attributes:
+        api_name
+        message
+        action      action caused the exception
+    """
+
+    def __init__(self, api_name: str, action: str, message: str = "No connection"):
         super().__init__(message)
         self.api_name = api_name
         self.message = message
@@ -26,7 +52,16 @@ class NoAPIConnectionException(WeatherAppException):
 
 
 class BadWeatherException(WeatherAppException):
-    def __init__(self, api_name, message="Bad weather"):
+    """
+    Usually raised when the weather answer is not parsable
+    Inherits WeatherAppException
+
+    Attributes:
+        api_name
+        message
+    """
+
+    def __init__(self, api_name: str, message: str = "Bad weather"):
         super().__init__(message)
         self.api_name = api_name
         self.message = message
@@ -36,7 +71,19 @@ class BadWeatherException(WeatherAppException):
 
 
 class NotCompatibleAPIException(WeatherAppException):
-    def __init__(self, api_name, message="Not compatible apis"):
+    """
+    Raised when API that used for a geolocation is not compatible
+    with the weather API
+    For example a geolocation API sets woeid but a weather one
+    demands latitude and longitude
+    Inherits WeatherAppException
+
+    Attributes:
+        api_name
+        message
+    """
+
+    def __init__(self, api_name: str, message: str = "Not compatible apis"):
         super().__init__(message)
         self.api_name = api_name
         self.message = message
@@ -46,11 +93,20 @@ class NotCompatibleAPIException(WeatherAppException):
 
 
 class ServiceUnavailableException(WeatherAppException):
-    def __init__(self, api_name, message="API unavailable"):
+    """
+    Raised when API that responded with an error response
+    Unlike NoAPIConnectionException this exception is raised when an API is reachable
+    Inherits WeatherAppException
+
+    Attributes:
+        api_name
+        message
+    """
+
+    def __init__(self, api_name: str, message: str = "API unavailable"):
         super().__init__(message)
         self.api_name = api_name
         self.message = message
 
     def __str__(self):
         return f"{self.message}: {self.api_name}"
-

@@ -20,6 +20,7 @@ class OpenWeatherHandler(BaseWeatherHandler):
     url: https://openweathermap.org/api
     Attributes:
         city           city object instance
+        logger
     Constants:
         API_NAME       short API name
         STATUS_TABLE   Weather object and API weather status mapping
@@ -50,7 +51,7 @@ class OpenWeatherHandler(BaseWeatherHandler):
     def ping(self) -> bool:
         """
         OpenWeather API connection test
-        Tries the connection for one second
+        Tries to connect to the API for one second
 
         :return: whether the call was successful
         """
@@ -70,7 +71,7 @@ class OpenWeatherHandler(BaseWeatherHandler):
         To have as successful call, OpenWeather API requires city longitude and latitude
         if not provided in the City object, raises corresponding message
 
-        :returns: URL that can be visited to get the weather information
+        :return: URL that can be visited to get the weather information
         :raises:
             NotCompatibleAPIException   if the api is not compatible with the city object
         """
@@ -90,7 +91,7 @@ class OpenWeatherHandler(BaseWeatherHandler):
         To have a successful call, OpenWeather API requires city longitude and latitude
         if not provided in the City object, raises the corresponding message
 
-        :returns: URL that can be visited to get a forecast
+        :return: URL that can be visited to get a forecast
         :raises:
             NotCompatibleAPIException   if the api is not compatible with the city object
         """
@@ -108,7 +109,7 @@ class OpenWeatherHandler(BaseWeatherHandler):
         """
         Gets the current weather from the OpenWeather API
 
-        :returns: Weather object object with the corresponding information
+        :return: Weather object object with the corresponding information
 
         :raises:
             BadWeatherException             API response is not parsable
@@ -145,7 +146,7 @@ class OpenWeatherHandler(BaseWeatherHandler):
 
         :param n:   number of predicted days
 
-        :returns:   Weather object list with the corresponding information
+        :return:   Weather object list with the corresponding information
 
         :raises:
             BadWeatherException             API response is not parsable

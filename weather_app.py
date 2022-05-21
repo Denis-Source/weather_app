@@ -1,4 +1,3 @@
-import json
 from os import listdir
 
 from kivy.lang import Builder
@@ -43,6 +42,41 @@ class GradientBackground(BoxLayout):
 
 
 class WeatherApp(App):
+    """
+    Weather application main class
+    Builds the layout and the screen manager
+    Adds key listeners
+
+    Screens:
+        Search screen with and entry to pass the location name
+        Loading screen with the animated spinner
+        Status screen to show both the weather and forecast report
+        Configuration screen to set the application preferences
+
+    Entirely based on the kivy framework
+
+    Considering the kivy handling of interaction between application and its elements
+    The following application object properties created:
+        bg_start        background gradient start color
+        bg_end          background gradient end color
+
+        time_format     selected time format (12 or 24 hours)
+        temp_format     selected temperature format (C or F)
+
+        preferred_city          selected location to load automatically
+        preferred_city_to_load  whether to load the location automatically
+
+        weather_handlers    list of all available weather APIS
+        city_handlers       list of all available geolocation APIS
+        sun_handlers        list of all available sun information APIS
+
+        selected_weather_handler    selected weather API
+        selected_city_handler       selected geolocation API
+        selected_sun_handler        selected sun information API
+
+        screen_manager
+        last_screen
+    """
     bg_start = StringProperty(AppConfig.BG_COLOR_PRIMARY[0])
     bg_end = StringProperty(AppConfig.BG_COLOR_PRIMARY[1])
 
@@ -103,7 +137,21 @@ class WeatherApp(App):
 
         self.last_screen = None
 
-    def build(self):
+    def build(self) -> ScreenManager:
+        """
+        Builds the application layout
+        Loads all of the layouts stored in 'layouts/' folder
+        Sets the following configuration:
+            No multitouch emulation
+            No resizable screen
+            No default screen titlebar
+        Overrides base kivy application build method
+        :return: screen manager with the following screens:
+            Search screen with and entry to pass the location name
+            Loading screen with the animated spinner
+            Status screen to show both the weather and forecast report
+            Configuration screen to set the application preferences
+        """
         kv_path = "layouts/"
         for kv in listdir(kv_path):
             if kv.endswith(".kv"):
@@ -142,6 +190,7 @@ class WeatherApp(App):
         return self.screen_manager
 
     def _key_handler(self, instance, key, *args):
+        """Binds various keys to events"""
         if not self.screen_manager.current == "loading":
             if key in (8, 27):
                 if not self.configuration_screen.ids.auto_city_input.focus:
@@ -154,7 +203,12 @@ class WeatherApp(App):
                 if self.screen_manager.current == "search":
                     self.search_screen.load_city()
 
-    def set_previous_screen(self):
+    def set_previous_screen(self) -> None:
+        """
+        Keeps track of the previous screens
+        Structures the app (search <- status <- configuration)
+        :return: None
+        """
         if self.screen_manager.current == "configuration":
             self.screen_manager.transition = FallOutTransition()
             self.screen_manager.current = self.last_screen
@@ -163,13 +217,25 @@ class WeatherApp(App):
             self.screen_manager.current = "search"
             self.last_screen = "search"
 
-    def open_settings(self, *args: list):
+    def open_settings(self, *args: list) -> None:
+        """
+        Opens the configuration screen instead of default kivy screen
+        Overrides kivy application method
+        :param args:
+        :return:
+        """
         if self.screen_manager.current != "configuration":
             self.last_screen = self.screen_manager.current
             self.screen_manager.transition = RiseInTransition()
             self.screen_manager.current = "configuration"
 
-    def get_first_screen(self):
+    def get_first_screen(self) -> None:
+        """
+        Works out the screen to be the first one
+        Sets the loading screen screen if the preferred location is set
+        Sets the status screen otherwise
+        :return: None
+        """
         if self.preferred_city_to_load:
             self.screen_manager.transition = NoTransition()
             self.screen_manager.current = "loading"

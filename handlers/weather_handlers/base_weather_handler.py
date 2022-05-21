@@ -10,6 +10,7 @@ class BaseWeatherHandler(ABC):
     Weather handler abstract base class
     Attributes:
         city           city object instance
+        logger
     Constants:
         API_NAME       short API name
         STATUS_TABLE   Weather object and API weather status mapping

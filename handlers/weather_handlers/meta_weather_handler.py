@@ -1,7 +1,10 @@
+from typing import List
+
 import requests
 import logging
 import datetime
 
+from handlers.city import City
 from handlers.weather_handlers.base_weather_handler import BaseWeatherHandler
 from handlers.weather import Weather
 from handlers.errors import NoAPIConnectionException, BadWeatherException, NotCompatibleAPIException, \
@@ -35,7 +38,7 @@ class MetaWeatherHandler(BaseWeatherHandler):
 
     API_NAME = "MetaWeather"
 
-    def __init__(self, city):
+    def __init__(self, city: City):
         super().__init__(city)
         self.logger = logging.getLogger("mw_wthr")
 
@@ -62,7 +65,7 @@ class MetaWeatherHandler(BaseWeatherHandler):
         To have a successful call, AccuWeather API requires city woeid
         if not provided in the City object raises the corresponding message
 
-        :returns: URL that can be visited to get a forecast
+        :return: URL that can be visited to get a forecast
         :raises:
             NotCompatibleAPIException   if the api is not compatible with the city object
         """
@@ -76,14 +79,14 @@ class MetaWeatherHandler(BaseWeatherHandler):
             self.logger.warning(f"Not compatible {self.API_NAME}")
             raise NotCompatibleAPIException(self.API_NAME)
 
-    def get_url_forecast(self):
+    def get_url_forecast(self) -> str:
         """
         Gets OpenWeather API url to get a forecast
         To have a successful call, AccuWeather API requires city woeid
         if not provided in the City object, raises the corresponding message
         The url for the current weather and a forecast is the same
 
-        :returns: URL that can be visited to get a forecast
+        :return: URL that can be visited to get a forecast
         :raises:
             NotCompatibleAPIException   if the api is not compatible with the city object
         """
@@ -91,11 +94,11 @@ class MetaWeatherHandler(BaseWeatherHandler):
         self.logger.debug("Creating forecast url (calling current url)")
         return self.get_url_current()
 
-    def get_weather_current(self):
+    def get_weather_current(self) -> Weather:
         """
         Gets the current weather from the AccuWeather API
 
-        :returns: Weather object object with the corresponding information
+        :return: Weather object object with the corresponding information
 
         :raises:
             BadWeatherException             API response is not parsable
@@ -132,13 +135,13 @@ class MetaWeatherHandler(BaseWeatherHandler):
             self.logger.warning(f"Error connecting {self.API_NAME}")
             raise NoAPIConnectionException(self.API_NAME, "current weather")
 
-    def get_weather_forecast(self, n):
+    def get_weather_forecast(self, n: int) -> List[Weather]:
         """
         Gets a forecast from the MetaWeather API
 
         :param n:   number of predicted days
 
-        :returns:   Weather object list with the corresponding information
+        :return:   Weather object list with the corresponding information
 
         :raises:
             BadWeatherException             API response is not parsable
@@ -148,9 +151,6 @@ class MetaWeatherHandler(BaseWeatherHandler):
 
         try:
             response = requests.get(self.get_url_forecast())
-            if response.status_code >= 400:
-                raise ServiceUnavailableException(self.API_NAME)
-
             if response.status_code >= 400:
                 raise ServiceUnavailableException(self.API_NAME)
 

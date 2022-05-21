@@ -74,8 +74,6 @@ class Weather:
             pressure: float = None, humidity: float = None, wind_speed: float = None,
             wind_direction: float = None, time: float = None, time_zone: float = None
     ):
-        """Weather instance constructor"""
-
         self.city_name = location_name
 
         self.status = status
@@ -92,10 +90,11 @@ class Weather:
         self.time = time
         self.time_zone = time_zone
 
-    def update_state(self, sun_info: SunInfo):
+    def update_state(self, sun_info: SunInfo) -> None:
         """
-        Method to update internal state
+        Method to update the internal state
         Sets weather color and images depending on time and conditions
+
         :param sun_info: SunInfo object to store sunset and sunrise timings
         :return: None
         """

@@ -1,5 +1,18 @@
 class City:
-    def __init__(self, name, longitude=None, latitude=None, woeid=None, state=None):
+    """
+    Stores information about a city
+
+    Attributes:
+        name
+        longitude
+        latitude
+        woeid       Where On Earth ID of a city
+        state       country, state, region etc
+    """
+
+    def __init__(self, name: str, longitude: float = None,
+                 latitude: float = None, woeid: int = None,
+                 state: str = None):
         self.name = name
         self.longitude = longitude
         self.latitude = latitude
@@ -11,4 +24,4 @@ class City:
                f"Long: {self.longitude}\n" \
                f"Latd: {self.latitude}\n" \
                f"Info: {self.woeid}\n" \
-               f"Stat: {self.state}" \
+               f"Stat: {self.state}"
